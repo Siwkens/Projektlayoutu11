@@ -2,8 +2,23 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageCircle, Phone, Mail, X } from 'lucide-react';
 
-export function FloatingActionButton() {
+interface FloatingActionButtonProps {
+  onChatClick?: () => void;
+}
+
+export function FloatingActionButton({ onChatClick }: FloatingActionButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleActionClick = (label: string) => {
+    if (label === 'Czat' && onChatClick) {
+      onChatClick();
+      setIsOpen(false);
+    } else if (label === 'Zadzwoń') {
+      window.location.href = 'tel:+48123456789';
+    } else if (label === 'Email') {
+      window.location.href = 'mailto:kontakt@wojciechbozemski.pl';
+    }
+  };
 
   const actions = [
     { icon: Phone, label: 'Zadzwoń', color: 'from-green-500 to-emerald-600' },
@@ -24,6 +39,7 @@ export function FloatingActionButton() {
             {actions.map((action, index) => (
               <motion.button
                 key={action.label}
+                onClick={() => handleActionClick(action.label)}
                 className={`group relative flex items-center gap-3 px-4 py-3 bg-gradient-to-r ${action.color} text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300`}
                 initial={{ opacity: 0, x: -20, rotateY: -90 }}
                 animate={{ 

@@ -1,7 +1,7 @@
 
-  # Projekt layoutu 1:1
+  # Bozemski.pl
 
-  This is a code bundle for Projekt layoutu 1:1. The original project is available at https://www.figma.com/design/OEieV72TJuCZNAf1yn4kUj/Projekt-layoutu-1-1.
+  This is a code bundle for Bozemski.pl. The original project is available at https://www.figma.com/design/OEieV72TJuCZNAf1yn4kUj/Bozemski.pl.
 
   ## Running the code
 

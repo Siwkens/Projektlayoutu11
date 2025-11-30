@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { SectionDivider } from './SectionDivider';
 
+import portraitImage from 'figma:asset/9592c4a21b5692dd6eb431cd07275a9415a49caf.png';
+
 export function AboutSection() {
   return (
     <>
@@ -13,7 +15,7 @@ export function AboutSection() {
         
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            {/* Portrait with 3D effects */}
+            {/* Portrait with 3D effects - Adjusted for landscape image */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -23,21 +25,21 @@ export function AboutSection() {
               style={{ perspective: '1000px' }}
             >
               <motion.div 
-                className="relative w-full max-w-md mx-auto aspect-[3/4] rounded-lg overflow-hidden"
+                className="relative w-full rounded-lg overflow-hidden shadow-2xl"
                 whileHover={{ 
-                  rotateY: 5,
-                  rotateX: -5,
-                  scale: 1.05,
+                  rotateY: 2,
+                  rotateX: -2,
+                  scale: 1.02,
                 }}
                 transition={{ type: "spring", stiffness: 300 }}
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 {/* Multiple glow layers for depth */}
                 <motion.div 
-                  className="absolute -inset-8 bg-purple-600/30 blur-3xl rounded-full"
+                  className="absolute -inset-8 bg-purple-600/20 blur-3xl rounded-full"
                   animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.5, 0.3],
+                    scale: [1, 1.1, 1],
+                    opacity: [0.2, 0.4, 0.2],
                   }}
                   transition={{
                     duration: 4,
@@ -45,28 +47,16 @@ export function AboutSection() {
                     ease: "easeInOut"
                   }}
                 />
-                <motion.div 
-                  className="absolute -inset-6 bg-pink-600/20 blur-2xl rounded-full"
-                  animate={{
-                    scale: [1.2, 1, 1.2],
-                    opacity: [0.2, 0.4, 0.2],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5
-                  }}
-                />
                 
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1733685318562-c726472bc1db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB0aGVyYXBpc3QlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjQxODQyNDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="Wojcech Bożemski"
-                  className="relative z-10 w-full h-full object-cover"
+                  src={portraitImage}
+                  alt="Wojciech Bożemski"
+                  className="relative z-10 w-full h-auto object-cover rounded-lg border border-white/10"
                 />
                 
-                {/* Glass morphism overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/40 via-transparent to-transparent backdrop-blur-[1px]" />
+                {/* Glass morphism overlay / Vignette to blend the edges */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a1a] via-transparent to-transparent opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a]/80 via-transparent to-transparent" />
               </motion.div>
 
               {/* Floating particles around image */}
@@ -119,10 +109,10 @@ export function AboutSection() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                Jestem terapeutą specjalizującym się w nowych metodach
-                w wyjaśnianiu przyczyn i przywracaniu zdrowia
-                także w polu energetycznych połączeń i uzdrowień
-                relacyjnych, sprzedaży, własności
+                Jako certyfikowany bioenergoterapeuta i pasjonat fizyki kwantowej, pomagam ludziom odzyskać wewnętrzną równowagę. 
+                Moje sesje opierają się na głębokim zrozumieniu struktury energetycznej człowieka – czakr, aury i meridianów. 
+                Wspieram procesy samouzdrawiania, usuwając blokady emocjonalne i energetyczne, które mogą manifestować się jako dolegliwości fizyczne.
+                Wierzę, że każdy z nas posiada naturalny potencjał do życia w pełni zdrowia i harmonii.
               </motion.p>
             </motion.div>
           </div>

@@ -1,7 +1,9 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { MorphingShapes } from './MorphingShapes';
 import { useRipple } from './RippleEffect';
+import { TextScramble } from './effects/TextScramble';
+import { Magnetic } from './effects/Magnetic';
+import logoImg from 'figma:asset/09d35af8f6f8fb0a2bcf708914af5feb3f54b60a.png';
 
 export function HeroSection() {
   const { scrollY } = useScroll();
@@ -13,36 +15,33 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Morphing background shapes */}
-      <MorphingShapes />
-
-      {/* Background Image with Parallax */}
-      <motion.div 
-        className="absolute inset-0"
-        style={{ y, scale }}
-      >
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1557264322-b44d383a2906?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1bml2ZXJzZSUyMG5lYnVsYSUyMHB1cnBsZXxlbnwxfHx8fDE3NjQxODQ1NDN8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Cosmic background"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a1a]/60 via-[#0a0a1a]/40 to-[#0a0a1a]" />
-        <div className="absolute inset-0 bg-purple-900/10" />
-      </motion.div>
-
+      {/* NOTE: MorphingShapes and Background Image removed in favor of global 3D CosmicScene in App.tsx for better performance and depth */}
+      
       {/* Content with parallax */}
       <motion.div 
         className="relative z-10 text-center px-6 max-w-4xl mx-auto"
         style={{ opacity }}
       >
-        <motion.h1 
-          className="text-white mb-4"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+        {/* Logo in Hero */}
+        <motion.div 
+          className="w-24 h-24 mx-auto mb-8 relative"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          Wojcech Bożemski
-        </motion.h1>
+           <img 
+            src={logoImg} 
+            alt="Wojciech Bożemski Logo" 
+            className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(168,85,247,0.6)]"
+          />
+        </motion.div>
+
+        <div className="mb-4 h-16 flex items-center justify-center">
+          <TextScramble 
+            text="Wojciech Bożemski" 
+            className="text-4xl md:text-6xl font-bold text-white block"
+          />
+        </div>
         
         <motion.p 
           className="text-white/90 uppercase tracking-[0.3em] mb-6" 
@@ -51,86 +50,74 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
-          Przestrzeń Bioterapii i Terapii Kwantowej
+          Gabinet Terapii Naturalnych i Rozwoju Świadomości
         </motion.p>
         
-        <motion.p 
-          className="text-white/80 mb-12 max-w-2xl mx-auto" 
-          style={{ fontSize: '0.95rem', lineHeight: '1.8' }}
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
+          className="mb-12"
         >
-          Przywrócenie przepływu energii, równowagi i harmonii<br />
-          w polu informacyjno-energetycznym
-        </motion.p>
+          <p 
+            className="text-white/80 max-w-2xl mx-auto" 
+            style={{ fontSize: '0.95rem', lineHeight: '1.8' }}
+          >
+            <TextScramble text="Przywracanie naturalnego przepływu energii życiowej." trigger={true} />
+            <br />
+            Harmonizacja ciała, umysłu i ducha poprzez terapię kwantową i świętą geometrię.
+          </p>
+        </motion.div>
 
         <motion.div 
-          className="flex gap-4 justify-center flex-wrap"
+          className="flex gap-6 justify-center flex-wrap items-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
         >
-          <motion.button
-            className="relative px-8 py-3 bg-transparent border border-white/30 text-white rounded-sm overflow-hidden group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={createRipple}
-            style={{ transformStyle: 'preserve-3d' }}
-          >
-            <RippleContainer />
-            
-            {/* Animated gradient border */}
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{
-                background: 'linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), transparent)',
-              }}
-              animate={{
-                x: ['-100%', '200%'],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-            
-            {/* Magnetic hover effect backdrop */}
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm" />
-            
-            <span className="relative z-10">Umów sesję</span>
-          </motion.button>
+          <Magnetic strength={0.3}>
+            <motion.button
+              className="relative px-8 py-4 bg-white/5 border border-white/30 text-white rounded-sm overflow-hidden group"
+              whileTap={{ scale: 0.95 }}
+              onClick={createRipple}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <RippleContainer />
+              
+              {/* Animated gradient border */}
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), transparent)',
+                }}
+                animate={{
+                  x: ['-100%', '200%'],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm" />
+              
+              <span className="relative z-10 tracking-widest font-light">UMÓW SESJĘ</span>
+            </motion.button>
+          </Magnetic>
           
-          <motion.button
-            className="relative px-8 py-3 bg-transparent border border-white/30 text-white rounded-sm overflow-hidden group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={createRipple}
-            style={{ transformStyle: 'preserve-3d' }}
-          >
-            <RippleContainer />
-            
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{
-                background: 'linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.5), transparent)',
-              }}
-              animate={{
-                x: ['-100%', '200%'],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "linear",
-                delay: 0.3
-              }}
-            />
-            
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm" />
-            
-            <span className="relative z-10">Dowiedź się więcej</span>
-          </motion.button>
+          <Magnetic strength={0.3}>
+            <motion.button
+              className="relative px-8 py-4 bg-transparent text-white/80 hover:text-white rounded-sm overflow-hidden group"
+              whileTap={{ scale: 0.95 }}
+              onClick={createRipple}
+            >
+              <RippleContainer />
+              <span className="relative z-10 tracking-widest text-sm border-b border-transparent group-hover:border-white/50 transition-colors pb-1">
+                DOWIEDZ SIĘ WIĘCEJ
+              </span>
+            </motion.button>
+          </Magnetic>
         </motion.div>
       </motion.div>
 
