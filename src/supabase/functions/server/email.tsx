@@ -5,7 +5,36 @@
  * Wymagane zmienne środowiskowe:
  * - RESEND_API_KEY - Klucz API z Resend (https://resend.com)
  * - EMAIL_FROM - Adres nadawcy (np. "Wojciech Bożemski <noreply@bozemski.pl>")
+ * 
+ * Brand Colors:
+ * - Primary Purple: #8b5cf6 (violet-500)
+ * - Secondary Blue: #3b82f6 (blue-500)
+ * - Background: #0a0a1a (dark)
+ * - Accent Purple: #a78bfa (violet-400)
  */
+
+// Brand constants
+const BRAND_COLORS = {
+  primary: '#8b5cf6',      // violet-500
+  primaryDark: '#7c3aed',  // violet-600
+  primaryLight: '#a78bfa', // violet-400
+  secondary: '#3b82f6',    // blue-500
+  secondaryDark: '#2563eb', // blue-600
+  secondaryLight: '#60a5fa', // blue-400
+  background: '#0a0a1a',   // dark
+  backgroundCard: '#0f172a', // slate-900
+  text: '#ffffff',
+  textMuted: '#94a3b8',
+  success: '#10b981',       // green-500
+  warning: '#fbbf24',       // amber-400
+  error: '#ef4444',         // red-500
+};
+
+const CONTACT_INFO = {
+  email: 'wojciechbozemski@gmail.com',
+  phone: '+48 509 674 129',
+  website: 'https://bozemski.pl',
+};
 
 interface EmailOptions {
   to: string;
@@ -86,11 +115,11 @@ export function bookingConfirmationEmail(booking: {
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f172a; padding: 40px 20px;">
     <tr>
       <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+        <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, ${BRAND_COLORS.backgroundCard} 0%, #1e293b 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
           
           <!-- Header -->
           <tr>
-            <td style="padding: 40px 40px 20px; text-align: center; background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);">
+            <td style="padding: 40px 40px 20px; text-align: center; background: linear-gradient(135deg, ${BRAND_COLORS.primaryDark} 0%, ${BRAND_COLORS.secondaryDark} 100%);">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                 ✨ Rezerwacja Przyjęta
               </h1>
@@ -112,7 +141,7 @@ export function bookingConfirmationEmail(booking: {
               <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 24px; margin: 30px 0; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <tr>
                   <td style="padding-bottom: 16px;">
-                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 2px solid #7c3aed; padding-bottom: 12px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 2px solid ${BRAND_COLORS.primary}; padding-bottom: 12px;">
                       📅 Szczegóły Rezerwacji
                     </h2>
                   </td>
@@ -139,8 +168,8 @@ export function bookingConfirmationEmail(booking: {
                 ` : ''}
                 <tr>
                   <td style="padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <p style="margin: 0; font-size: 13px; color: #64748b; background-color: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #fbbf24;">
-                      ⏳ Status: <strong style="color: #fbbf24;">Oczekuje na potwierdzenie</strong><br>
+                    <p style="margin: 0; font-size: 13px; color: ${BRAND_COLORS.warning}; background-color: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid ${BRAND_COLORS.warning};">
+                      ⏳ Status: <strong style="color: ${BRAND_COLORS.warning};">Oczekuje na potwierdzenie</strong><br>
                       Otrzymasz kolejny email, gdy termin zostanie potwierdzony.
                     </p>
                   </td>
@@ -152,14 +181,14 @@ export function bookingConfirmationEmail(booking: {
               </p>
 
               <!-- Contact Info -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(124, 58, 237, 0.1); border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border-radius: 8px; padding: 20px; margin: 20px 0; border: 1px solid rgba(139, 92, 246, 0.2);">
                 <tr>
                   <td style="text-align: center;">
-                    <p style="margin: 0 0 8px; font-size: 14px; color: #c4b5fd;">
-                      📧 kontakt@wojciechbozemski.pl
+                    <p style="margin: 0 0 8px; font-size: 14px; color: ${BRAND_COLORS.primaryLight};">
+                      📧 ${CONTACT_INFO.email}
                     </p>
-                    <p style="margin: 0; font-size: 14px; color: #c4b5fd;">
-                      📱 +48 XXX XXX XXX
+                    <p style="margin: 0; font-size: 14px; color: ${BRAND_COLORS.primaryLight};">
+                      📱 ${CONTACT_INFO.phone}
                     </p>
                   </td>
                 </tr>
@@ -247,7 +276,7 @@ export function bookingConfirmedEmail(booking: {
               <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 24px; margin: 30px 0; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <tr>
                   <td style="padding-bottom: 16px;">
-                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 2px solid #10b981; padding-bottom: 12px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 2px solid ${BRAND_COLORS.success}; padding-bottom: 12px;">
                       📅 Szczegóły Sesji
                     </h2>
                   </td>
@@ -274,7 +303,7 @@ export function bookingConfirmedEmail(booking: {
               </table>
 
               <!-- Preparation Tips -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(124, 58, 237, 0.1); border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border-radius: 8px; padding: 20px; margin: 20px 0; border: 1px solid rgba(139, 92, 246, 0.2);">
                 <tr>
                   <td>
                     <h3 style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: #ffffff;">
@@ -381,8 +410,8 @@ export function bookingCancelledEmail(booking: {
                 </tr>
                 <tr>
                   <td style="padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <p style="margin: 0; font-size: 13px; color: #fca5a5; background-color: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #ef4444;">
-                      ❌ Status: <strong style="color: #ef4444;">Anulowana</strong>
+                    <p style="margin: 0; font-size: 13px; color: ${BRAND_COLORS.error}; background-color: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid ${BRAND_COLORS.error};">
+                      ❌ Status: <strong style="color: ${BRAND_COLORS.error};">Anulowana</strong>
                     </p>
                   </td>
                 </tr>
@@ -393,14 +422,14 @@ export function bookingCancelledEmail(booking: {
               </p>
 
               <!-- Contact Info -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(124, 58, 237, 0.1); border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border-radius: 8px; padding: 20px; margin: 20px 0; border: 1px solid rgba(139, 92, 246, 0.2);">
                 <tr>
                   <td style="text-align: center;">
-                    <p style="margin: 0 0 8px; font-size: 14px; color: #c4b5fd;">
-                      📧 kontakt@wojciechbozemski.pl
+                    <p style="margin: 0 0 8px; font-size: 14px; color: ${BRAND_COLORS.primaryLight};">
+                      📧 ${CONTACT_INFO.email}
                     </p>
-                    <p style="margin: 0; font-size: 14px; color: #c4b5fd;">
-                      📱 +48 XXX XXX XXX
+                    <p style="margin: 0; font-size: 14px; color: ${BRAND_COLORS.primaryLight};">
+                      📱 ${CONTACT_INFO.phone}
                     </p>
                   </td>
                 </tr>
@@ -461,7 +490,7 @@ export function adminNewBookingEmail(booking: {
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f172a; padding: 40px 20px;">
     <tr>
       <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+        <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, ${BRAND_COLORS.backgroundCard} 0%, #1e293b 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
           
           <!-- Header -->
           <tr>
@@ -483,7 +512,7 @@ export function adminNewBookingEmail(booking: {
               <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 24px; margin: 30px 0; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <tr>
                   <td style="padding-bottom: 16px;">
-                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 2px solid #7c3aed; padding-bottom: 12px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 2px solid ${BRAND_COLORS.primary}; padding-bottom: 12px;">
                       📅 Szczegóły Rezerwacji
                     </h2>
                   </td>
@@ -517,8 +546,8 @@ export function adminNewBookingEmail(booking: {
                 ` : ''}
                 <tr>
                   <td style="padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <p style="margin: 0; font-size: 13px; color: #fbbf24; background-color: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #fbbf24;">
-                      ⏳ Status: <strong style="color: #fbbf24;">Oczekuje na potwierdzenie</strong>
+                    <p style="margin: 0; font-size: 13px; color: ${BRAND_COLORS.warning}; background-color: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid ${BRAND_COLORS.warning};">
+                      ⏳ Status: <strong style="color: ${BRAND_COLORS.warning};">Oczekuje na potwierdzenie</strong>
                     </p>
                   </td>
                 </tr>
@@ -563,7 +592,7 @@ export function welcomeEmail(userName: string, userEmail: string): string {
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f172a; padding: 40px 20px;">
     <tr>
       <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+        <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, ${BRAND_COLORS.backgroundCard} 0%, #1e293b 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
           
           <!-- Header -->
           <tr>
@@ -590,7 +619,7 @@ export function welcomeEmail(userName: string, userEmail: string): string {
               </p>
 
               <!-- Features List -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 24px; margin: 30px 0; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%); border-radius: 12px; padding: 24px; margin: 30px 0; border: 1px solid rgba(139, 92, 246, 0.2);">
                 <tr>
                   <td>
                     <ul style="margin: 0; padding-left: 20px; font-size: 16px; line-height: 2; color: #e2e8f0;">
@@ -609,14 +638,14 @@ export function welcomeEmail(userName: string, userEmail: string): string {
               </p>
 
               <!-- Contact Info -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: rgba(124, 58, 237, 0.1); border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border-radius: 8px; padding: 20px; margin: 20px 0; border: 1px solid rgba(139, 92, 246, 0.2);">
                 <tr>
                   <td style="text-align: center;">
-                    <p style="margin: 0 0 8px; font-size: 14px; color: #c4b5fd;">
-                      📧 kontakt@wojciechbozemski.pl
+                    <p style="margin: 0 0 8px; font-size: 14px; color: ${BRAND_COLORS.primaryLight};">
+                      📧 ${CONTACT_INFO.email}
                     </p>
-                    <p style="margin: 0; font-size: 14px; color: #c4b5fd;">
-                      📱 +48 XXX XXX XXX
+                    <p style="margin: 0; font-size: 14px; color: ${BRAND_COLORS.primaryLight};">
+                      📱 ${CONTACT_INFO.phone}
                     </p>
                   </td>
                 </tr>

@@ -249,4 +249,100 @@ app.post("/make-server-139d10cf/signup", async (c) => {
   }
 });
 
+// --- Test Email Endpoint (for development/testing) ---
+app.post("/make-server-139d10cf/test-email", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    // Only allow admins to test emails
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com"];
+    const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+    if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
+
+    const { type, to } = await c.req.json();
+    
+    if (!type || !to) {
+      return c.json({ error: "Missing 'type' or 'to' field" }, 400);
+    }
+
+    let emailHtml = '';
+    let subject = '';
+
+    switch (type) {
+      case 'welcome':
+        emailHtml = welcomeEmail(to.split('@')[0], to);
+        subject = '✨ Witamy w Bozemski.pl!';
+        break;
+      
+      case 'booking-confirmation':
+        emailHtml = bookingConfirmationEmail({
+          userName: 'Test User',
+          date: new Date().toISOString(),
+          serviceType: 'Bioterapia Energetyczna',
+          note: 'To jest testowa rezerwacja',
+        });
+        subject = '✨ Rezerwacja przyjęta - Bozemski.pl';
+        break;
+      
+      case 'booking-confirmed':
+        emailHtml = bookingConfirmedEmail({
+          userName: 'Test User',
+          date: new Date().toISOString(),
+          serviceType: 'Bioterapia Energetyczna',
+        });
+        subject = '✅ Rezerwacja potwierdzona - Bozemski.pl';
+        break;
+      
+      case 'booking-cancelled':
+        emailHtml = bookingCancelledEmail({
+          userName: 'Test User',
+          date: new Date().toISOString(),
+          serviceType: 'Bioterapia Energetyczna',
+        });
+        subject = '❌ Rezerwacja anulowana - Bozemski.pl';
+        break;
+      
+      case 'admin-notification':
+        emailHtml = adminNewBookingEmail({
+          userName: 'Test User',
+          userEmail: to,
+          date: new Date().toISOString(),
+          serviceType: 'Bioterapia Energetyczna',
+          note: 'To jest testowa rezerwacja',
+        });
+        subject = '🔔 Nowa rezerwacja od Test User';
+        break;
+      
+      default:
+        return c.json({ error: `Unknown email type: ${type}. Available: welcome, booking-confirmation, booking-confirmed, booking-cancelled, admin-notification` }, 400);
+    }
+
+    const result = await sendEmail({
+      to,
+      subject,
+      html: emailHtml,
+    });
+
+    if (result.success) {
+      return c.json({ 
+        success: true, 
+        message: `Email typu '${type}' wysłany pomyślnie do ${to}`,
+        type,
+        to 
+      });
+    } else {
+      return c.json({ 
+        success: false, 
+        error: result.error,
+        type,
+        to 
+      }, 500);
+    }
+  } catch (e) {
+    console.error("Test email error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
 Deno.serve(app.fetch);
