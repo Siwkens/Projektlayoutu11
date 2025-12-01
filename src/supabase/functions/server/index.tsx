@@ -3,6 +3,14 @@ import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import * as kv from "./kv_store.tsx";
 import { createClient } from "jsr:@supabase/supabase-js@2.49.8";
+import { 
+  sendEmail, 
+  bookingConfirmationEmail, 
+  bookingConfirmedEmail, 
+  bookingCancelledEmail,
+  adminNewBookingEmail,
+  welcomeEmail 
+} from "./email.tsx";
 
 const app = new Hono();
 
@@ -69,6 +77,41 @@ app.post("/make-server-139d10cf/bookings", async (c) => {
     };
     
     await kv.set(`booking_${id}`, booking);
+    
+    // Wysyłanie emaili (nie blokujemy odpowiedzi jeśli email się nie wyśle)
+    try {
+      // Email do klienta - potwierdzenie otrzymania rezerwacji
+      await sendEmail({
+        to: user.email!,
+        subject: '✨ Rezerwacja przyjęta - Bozemski.pl',
+        html: bookingConfirmationEmail({
+          userName: booking.user_name,
+          date: booking.date,
+          serviceType: booking.serviceType,
+          note: booking.note,
+        }),
+      });
+
+      // Email do admina - powiadomienie o nowej rezerwacji
+      const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com"];
+      for (const adminEmail of ADMIN_EMAILS) {
+        await sendEmail({
+          to: adminEmail,
+          subject: `🔔 Nowa rezerwacja od ${booking.user_name}`,
+          html: adminNewBookingEmail({
+            userName: booking.user_name,
+            userEmail: booking.user_email,
+            date: booking.date,
+            serviceType: booking.serviceType,
+            note: booking.note,
+          }),
+        });
+      }
+    } catch (emailError) {
+      // Logujemy błąd, ale nie przerywamy procesu
+      console.error('Błąd wysyłania emaili:', emailError);
+    }
+    
     return c.json(booking);
   } catch (e) {
     console.error("Booking create error:", e);
@@ -117,8 +160,41 @@ app.patch("/make-server-139d10cf/bookings/:id", async (c) => {
     const booking = await kv.get(`booking_${id}`);
     if (!booking) return c.json({ error: "Not found" }, 404);
     
+    const oldStatus = booking.status;
     booking.status = status;
     await kv.set(`booking_${id}`, booking);
+    
+    // Wysyłanie emaili przy zmianie statusu (tylko jeśli status się zmienił)
+    if (oldStatus !== status && booking.user_email) {
+      try {
+        if (status === 'confirmed') {
+          // Email do klienta - rezerwacja potwierdzona
+          await sendEmail({
+            to: booking.user_email,
+            subject: '✅ Rezerwacja potwierdzona - Bozemski.pl',
+            html: bookingConfirmedEmail({
+              userName: booking.user_name,
+              date: booking.date,
+              serviceType: booking.serviceType,
+            }),
+          });
+        } else if (status === 'cancelled') {
+          // Email do klienta - rezerwacja anulowana
+          await sendEmail({
+            to: booking.user_email,
+            subject: '❌ Rezerwacja anulowana - Bozemski.pl',
+            html: bookingCancelledEmail({
+              userName: booking.user_name,
+              date: booking.date,
+              serviceType: booking.serviceType,
+            }),
+          });
+        }
+      } catch (emailError) {
+        // Logujemy błąd, ale nie przerywamy procesu
+        console.error('Błąd wysyłania emaila:', emailError);
+      }
+    }
     
     return c.json(booking);
   } catch (e) {
@@ -151,6 +227,19 @@ app.post("/make-server-139d10cf/signup", async (c) => {
     if (error) {
       console.error("Signup error:", error);
       return c.json({ error: error.message }, 400);
+    }
+
+    // Wysyłanie emaila powitalnego (nie blokujemy odpowiedzi jeśli email się nie wyśle)
+    try {
+      const userName = data?.name || email.split('@')[0];
+      await sendEmail({
+        to: email,
+        subject: '✨ Witamy w Bozemski.pl!',
+        html: welcomeEmail(userName, email),
+      });
+    } catch (emailError) {
+      // Logujemy błąd, ale nie przerywamy procesu
+      console.error('Błąd wysyłania emaila powitalnego:', emailError);
     }
 
     return c.json(user);
