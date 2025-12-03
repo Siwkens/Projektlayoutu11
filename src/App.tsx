@@ -8,7 +8,6 @@ import { StatsSection } from './components/StatsSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { BlogSection } from './components/BlogSection';
 import { FAQSection } from './components/FAQSection';
-import { PricingSection } from './components/PricingSection';
 import { Footer } from './components/Footer';
 import { Navigation } from './components/Navigation';
 import { CookieConsent } from './components/CookieConsent';
@@ -172,10 +171,6 @@ function AppContent() {
             
             <SectionTransition id="faq">
               <FAQSection />
-            </SectionTransition>
-            
-            <SectionTransition id="pricing">
-              <PricingSection onBookingClick={() => setIsBookingOpen(true)} />
             </SectionTransition>
             
             {/* Footer */}

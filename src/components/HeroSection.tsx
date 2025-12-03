@@ -3,7 +3,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useRipple } from './RippleEffect';
 import { TextScramble } from './effects/TextScramble';
 import { Magnetic } from './effects/Magnetic';
-import logoImg from 'figma:asset/09d35af8f6f8fb0a2bcf708914af5feb3f54b60a.png';
+import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
 
 export function HeroSection() {
   const { scrollY } = useScroll();

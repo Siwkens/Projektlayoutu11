@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Menu, X, Sparkles } from 'lucide-react';
 import { useAuth } from './context/AuthContext';
-import logoImg from 'figma:asset/09d35af8f6f8fb0a2bcf708914af5feb3f54b60a.png';
+import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
 
 const navLinks = [
   { label: 'O mnie', href: '#about' },
@@ -10,7 +10,6 @@ const navLinks = [
   { label: 'Usługi', href: '#services' },
   { label: 'Media', href: '#media' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Cennik', href: '#pricing' },
 ];
 
 interface NavigationProps {
