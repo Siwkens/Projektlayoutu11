@@ -21,6 +21,39 @@ app.use(
   }),
 );
 
+// Middleware to check for authorization header on Supabase Edge Functions
+app.use('/make-server-139d10cf/*', async (c, next) => {
+  const authHeader = c.req.header('Authorization');
+  
+  // Log all headers for debugging
+  console.log('📨 Incoming request to:', c.req.path);
+  console.log('🔑 Authorization header present:', !!authHeader);
+  
+  // For public endpoints (health, init-admin, create-admin, signup), skip auth check
+  const publicEndpoints = [
+    '/make-server-139d10cf/health',
+    '/make-server-139d10cf/init-admin',
+    '/make-server-139d10cf/create-admin',
+    '/make-server-139d10cf/signup'
+  ];
+  
+  if (publicEndpoints.includes(c.req.path)) {
+    console.log('✅ Public endpoint - skipping auth check');
+    return await next();
+  }
+  
+  // For protected endpoints, require auth
+  if (!authHeader) {
+    console.error('❌ Missing authorization header for protected endpoint');
+    return c.json({ 
+      code: 401,
+      message: "Missing authorization header" 
+    }, 401);
+  }
+  
+  return await next();
+});
+
 // Helper to get user from token
 const getUser = async (req: Request) => {
   const authHeader = req.headers.get('Authorization');
@@ -208,6 +241,77 @@ app.post("/make-server-139d10cf/init-admin", async (c) => {
     });
   } catch (e) {
     console.error("Admin init exception:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Create Admin Account (flexible endpoint)
+app.post("/make-server-139d10cf/create-admin", async (c) => {
+  try {
+    const { email, password, name } = await c.req.json();
+    
+    console.log('🔧 Otrzymano żądanie utworzenia admina:', { email, name });
+    
+    if (!email || !password) {
+      console.error('❌ Brak emaila lub hasła');
+      return c.json({ error: "Email i hasło są wymagane" }, 400);
+    }
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
+    console.log('📋 Sprawdzanie czy użytkownik już istnieje...');
+    
+    // Check if user already exists
+    const { data: existingUsers, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('❌ Błąd podczas sprawdzania użytkowników:', listError);
+      return c.json({ error: listError.message }, 500);
+    }
+    
+    const userExists = existingUsers?.users.some(u => u.email === email);
+
+    if (userExists) {
+      console.log('✅ Użytkownik już istnieje:', email);
+      return c.json({ 
+        message: "Konto administratora już istnieje", 
+        email: email,
+        alreadyExists: true 
+      });
+    }
+
+    console.log('➕ Tworzenie nowego użytkownika administratora...');
+    
+    // Create admin user
+    const { data: user, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      user_metadata: { 
+        name: name || "Administrator",
+        role: "admin" 
+      },
+      email_confirm: true
+    });
+
+    if (error) {
+      console.error("❌ Admin create error:", error);
+      return c.json({ error: error.message }, 400);
+    }
+
+    console.log('✅ Użytkownik utworzony pomyślnie:', user?.id);
+
+    return c.json({ 
+      message: "Konto administratora zostało utworzone pomyślnie",
+      email: email,
+      password: password,
+      userId: user?.id,
+      info: "UWAGA: Zapisz hasło i zmień je po pierwszym logowaniu!"
+    });
+  } catch (e) {
+    console.error("❌ Admin create exception:", e);
     return c.json({ error: e.message }, 500);
   }
 });

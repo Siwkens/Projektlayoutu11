@@ -1,12 +1,52 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Shield, Loader2, CheckCircle, XCircle } from 'lucide-react';
-import { projectId } from '../utils/supabase/info';
+import { Shield, Loader2, CheckCircle, XCircle, UserPlus } from 'lucide-react';
+import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 export function AdminSetup() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedAdmin, setSelectedAdmin] = useState<'test' | 'patryk'>('patryk');
+  const [connectionStatus, setConnectionStatus] = useState<string>('');
+
+  const adminOptions = {
+    test: {
+      email: 'admin@test.pl',
+      password: 'Admin123!',
+      name: 'Administrator Testowy'
+    },
+    patryk: {
+      email: 'patryk.siwkens@gmail.com',
+      password: 'PatrykAdmin2024!',
+      name: 'Patryk Siwkens'
+    }
+  };
+
+  const testConnection = async () => {
+    try {
+      setConnectionStatus('Testowanie połączenia...');
+      console.log('🔌 Test połączenia z backendem...');
+      
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-139d10cf/health`,
+        { method: 'GET' }
+      );
+      
+      console.log('📡 Status health check:', response.status);
+      const data = await response.json();
+      console.log('📦 Odpowiedź health:', data);
+      
+      if (response.ok && data.status === 'ok') {
+        setConnectionStatus('✅ Backend działa poprawnie');
+      } else {
+        setConnectionStatus('⚠️ Backend odpowiada, ale status nieoczekiwany');
+      }
+    } catch (err: any) {
+      console.error('❌ Błąd połączenia:', err);
+      setConnectionStatus(`❌ Brak połączenia: ${err.message}`);
+    }
+  };
 
   const initializeAdmin = async () => {
     setIsLoading(true);
@@ -14,25 +54,46 @@ export function AdminSetup() {
     setResult(null);
 
     try {
+      const admin = adminOptions[selectedAdmin];
+      
+      console.log('🔧 Tworzenie konta administratora:', admin.email);
+      console.log('🌐 URL:', `https://${projectId}.supabase.co/functions/v1/make-server-139d10cf/create-admin`);
+      console.log('🔑 Używam publicAnonKey dla autoryzacji');
+      
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-139d10cf/init-admin`,
+        `https://${projectId}.supabase.co/functions/v1/make-server-139d10cf/create-admin`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${publicAnonKey}`
           },
+          body: JSON.stringify({
+            email: admin.email,
+            password: admin.password,
+            name: admin.name
+          })
         }
       );
 
+      console.log('📡 Odpowiedź serwera - status:', response.status);
+      console.log('📡 Headers:', Object.fromEntries(response.headers.entries()));
+      
       const data = await response.json();
+      console.log('📦 Dane z serwera:', data);
 
       if (!response.ok) {
-        throw new Error(data.error || 'Błąd podczas tworzenia konta');
+        const errorMsg = data.error || data.message || `HTTP ${response.status}`;
+        console.error('❌ Szczegóły błędu:', errorMsg, data);
+        throw new Error(errorMsg);
       }
 
-      setResult(data);
+      setResult({ ...data, email: admin.email, password: admin.password });
     } catch (err: any) {
-      setError(err.message || 'Wystąpił nieoczekiwany błąd');
+      console.error('❌ Błąd tworzenia konta:', err);
+      const errorMessage = err.message || 'Wystąpił nieoczekiwany błąd';
+      console.error('❌ Pełny obiekt błędu:', err);
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -51,25 +112,81 @@ export function AdminSetup() {
           </div>
           <div>
             <h3 className="text-white font-bold">Inicjalizacja Admina</h3>
-            <p className="text-white/50 text-xs">Utwórz konto testowe</p>
+            <p className="text-white/50 text-xs">Utwórz konto administratora</p>
           </div>
         </div>
 
         {!result && !error && (
-          <button
-            onClick={initializeAdmin}
-            disabled={isLoading}
-            className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin" size={18} />
-                Tworzenie...
-              </>
-            ) : (
-              'Stwórz Konto Admina'
+          <>
+            {/* Admin Selection */}
+            <div className="space-y-2 mb-4">
+              <label className="text-white/70 text-sm font-medium">Wybierz administratora:</label>
+              <div className="space-y-2">
+                <button
+                  onClick={() => setSelectedAdmin('patryk')}
+                  className={`w-full p-3 rounded-lg text-left transition-all ${
+                    selectedAdmin === 'patryk'
+                      ? 'bg-purple-600 text-white border-2 border-purple-400'
+                      : 'bg-white/5 text-white/70 border border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <UserPlus size={16} />
+                    <div>
+                      <div className="font-medium text-sm">Patryk Siwkens</div>
+                      <div className="text-xs opacity-70">patryk.siwkens@gmail.com</div>
+                    </div>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => setSelectedAdmin('test')}
+                  className={`w-full p-3 rounded-lg text-left transition-all ${
+                    selectedAdmin === 'test'
+                      ? 'bg-purple-600 text-white border-2 border-purple-400'
+                      : 'bg-white/5 text-white/70 border border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <UserPlus size={16} />
+                    <div>
+                      <div className="font-medium text-sm">Konto Testowe</div>
+                      <div className="text-xs opacity-70">admin@test.pl</div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={initializeAdmin}
+              disabled={isLoading}
+              className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin" size={18} />
+                  Tworzenie...
+                </>
+              ) : (
+                'Stwórz Konto Admina'
+              )}
+            </button>
+            
+            {/* Connection test button */}
+            <button
+              onClick={testConnection}
+              className="w-full py-2 bg-white/5 hover:bg-white/10 text-white/70 rounded-lg text-xs transition-colors mt-2"
+            >
+              🔌 Test Połączenia
+            </button>
+            
+            {connectionStatus && (
+              <div className="mt-2 text-xs text-white/60 bg-black/30 p-2 rounded">
+                {connectionStatus}
+              </div>
             )}
-          </button>
+          </>
         )}
 
         {result && (
