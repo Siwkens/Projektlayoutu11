@@ -26,7 +26,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   const [filter, setFilter] = useState<'all' | 'pending'>('all');
 
   // NOTE: Add admin emails here
-  const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com"];
+  const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
 
   const fetchBookings = async () => {
     setIsLoading(true);

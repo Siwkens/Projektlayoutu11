@@ -85,7 +85,7 @@ app.get("/make-server-139d10cf/bookings", async (c) => {
     const bookings = await kv.getByPrefix("booking_");
     
     // Admin Check
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     
     if (isAdmin) {
@@ -107,7 +107,7 @@ app.patch("/make-server-139d10cf/bookings/:id", async (c) => {
     const user = await getUser(c.req.raw);
     if (!user) return c.json({ error: "Unauthorized" }, 401);
     
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     if (!isAdmin) return c.json({ error: "Forbidden" }, 403);
 
@@ -156,6 +156,58 @@ app.post("/make-server-139d10cf/signup", async (c) => {
     return c.json(user);
   } catch (e) {
     console.error("Signup exception:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Initialize Admin Account (for development/testing)
+app.post("/make-server-139d10cf/init-admin", async (c) => {
+  try {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
+    // Admin credentials
+    const adminEmail = "admin@test.pl";
+    const adminPassword = "Admin123!";
+
+    // Check if admin already exists
+    const { data: existingUsers } = await supabase.auth.admin.listUsers();
+    const adminExists = existingUsers?.users.some(u => u.email === adminEmail);
+
+    if (adminExists) {
+      return c.json({ 
+        message: "Konto administratora już istnieje", 
+        email: adminEmail,
+        alreadyExists: true 
+      });
+    }
+
+    // Create admin user
+    const { data: user, error } = await supabase.auth.admin.createUser({
+      email: adminEmail,
+      password: adminPassword,
+      user_metadata: { 
+        name: "Administrator",
+        role: "admin" 
+      },
+      email_confirm: true
+    });
+
+    if (error) {
+      console.error("Admin init error:", error);
+      return c.json({ error: error.message }, 400);
+    }
+
+    return c.json({ 
+      message: "Konto administratora zostało utworzone",
+      email: adminEmail,
+      password: adminPassword,
+      info: "UWAGA: Zmień hasło po pierwszym logowaniu!"
+    });
+  } catch (e) {
+    console.error("Admin init exception:", e);
     return c.json({ error: e.message }, 500);
   }
 });

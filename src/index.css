@@ -1098,6 +1098,10 @@
     width: 300px;
   }
 
+  .w-\[400px\] {
+    width: 400px;
+  }
+
   .w-\[600px\] {
     width: 600px;
   }
@@ -1445,6 +1449,16 @@
   @supports (color: color-mix(in lab, red, red)) {
     .border-purple-500\/20 {
       border-color: color-mix(in oklab, var(--color-purple-500) 20%, transparent);
+    }
+  }
+
+  .border-red-500\/20 {
+    border-color: color-mix(in srgb, oklch(.637 .237 25.331) 20%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-red-500\/20 {
+      border-color: color-mix(in oklab, var(--color-red-500) 20%, transparent);
     }
   }
 
@@ -2887,6 +2901,10 @@
     opacity: .2;
   }
 
+  .opacity-30 {
+    opacity: .3;
+  }
+
   .opacity-40 {
     opacity: .4;
   }
@@ -3029,8 +3047,14 @@
     filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
   }
 
-  .drop-shadow-\[0_0_15px_rgba\(168\,85\,247\,0\.5\)\] {
-    --tw-drop-shadow-size: drop-shadow(0 0 15px var(--tw-drop-shadow-color, #a855f780));
+  .drop-shadow {
+    --tw-drop-shadow-size: drop-shadow(0 1px 2px var(--tw-drop-shadow-color, #0000001a)) drop-shadow(0 1px 1px var(--tw-drop-shadow-color, #0000000f));
+    --tw-drop-shadow: drop-shadow(0 1px 2px #0000001a) drop-shadow(0 1px 1px #0000000f);
+    filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
+  }
+
+  .drop-shadow-\[0_0_20px_rgba\(168\,85\,247\,0\.6\)\] {
+    --tw-drop-shadow-size: drop-shadow(0 0 20px var(--tw-drop-shadow-color, #a855f799));
     --tw-drop-shadow: var(--tw-drop-shadow-size);
     filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
   }
@@ -3700,6 +3724,12 @@
   }
 
   @media (width >= 48rem) {
+    .md\:h-\[600px\] {
+      height: 600px;
+    }
+  }
+
+  @media (width >= 48rem) {
     .md\:h-\[700px\] {
       height: 700px;
     }
@@ -3720,6 +3750,12 @@
   @media (width >= 48rem) {
     .md\:w-\[400px\] {
       width: 400px;
+    }
+  }
+
+  @media (width >= 48rem) {
+    .md\:w-\[600px\] {
+      width: 600px;
     }
   }
 

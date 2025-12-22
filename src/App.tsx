@@ -28,6 +28,7 @@ import { SmoothScrollContainer } from './components/SmoothScroll';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { SectionTransition } from './components/PageTransition';
 import { NavigationDots } from './components/NavigationDots';
+import { AdminSetup } from './components/AdminSetup';
 
 // Lazy load heavy 3D components for better performance
 const CosmicScene = lazy(() => 
@@ -132,6 +133,9 @@ function AppContent() {
 
           {/* Performance Monitor (Ctrl+Shift+P to toggle) */}
           <PerformanceMonitor debug={false} />
+          
+          {/* Admin Setup Helper (only for development) */}
+          <AdminSetup />
           
           {/* Main content with smooth transitions */}
           <div className="relative z-10">

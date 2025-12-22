@@ -1,9 +1,12 @@
 import { motion, useScroll, useTransform } from 'motion/react';
+import { useState } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useRipple } from './RippleEffect';
 import { TextScramble } from './effects/TextScramble';
 import { Magnetic } from './effects/Magnetic';
+import { useMood } from './context/MoodContext';
 import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
+import atomImg from 'figma:asset/20bd66bcebd6cde094134f51d7369c09fc04dc0c.png';
 
 export function HeroSection() {
   const { scrollY } = useScroll();
@@ -12,14 +15,98 @@ export function HeroSection() {
   const scale = useTransform(scrollY, [0, 300], [1, 1.1]);
   
   const { createRipple, RippleContainer } = useRipple();
+  const { colors } = useMood();
+  const [isAtomHovered, setIsAtomHovered] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* NOTE: MorphingShapes and Background Image removed in favor of global 3D CosmicScene in App.tsx for better performance and depth */}
       
+      {/* 3D Atom graphic - central position with dynamic mood colors */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center pointer-events-auto cursor-pointer"
+        style={{ y }}
+        onMouseEnter={() => setIsAtomHovered(true)}
+        onMouseLeave={() => setIsAtomHovered(false)}
+      >
+        <motion.div
+          className="relative w-[400px] h-[400px] md:w-[600px] md:h-[600px]"
+          initial={{ opacity: 0, scale: 0.5, rotateY: 0 }}
+          animate={{ 
+            opacity: isAtomHovered ? 0.7 : 0.4,
+            scale: isAtomHovered ? 1.1 : 1,
+            rotateY: 360,
+          }}
+          transition={{
+            opacity: { duration: 0.4 },
+            scale: { duration: 0.4, type: "spring", stiffness: 200 },
+            rotateY: { 
+              duration: 20, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }
+          }}
+          style={{
+            filter: `drop-shadow(0 0 60px ${colors.primary}80) drop-shadow(0 0 100px ${colors.accent}50)`,
+            transformStyle: 'preserve-3d',
+          }}
+        >
+          {/* Pulsing energy rings */}
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 opacity-30"
+            style={{ borderColor: colors.primary }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0, 0.3],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeOut"
+            }}
+          />
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 opacity-30"
+            style={{ borderColor: colors.accent }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.3, 0, 0.3],
+            }}
+            transition={{
+              duration: 3,
+              delay: 1,
+              repeat: Infinity,
+              ease: "easeOut"
+            }}
+          />
+          
+          {/* Main atom image with pulsating glow */}
+          <motion.img 
+            src={atomImg}
+            alt="Energy Atom"
+            className="w-full h-full object-contain"
+            style={{ 
+              mixBlendMode: 'screen',
+            }}
+            animate={{
+              filter: [
+                `drop-shadow(0 0 20px ${colors.primary}60)`,
+                `drop-shadow(0 0 40px ${colors.accent}80)`,
+                `drop-shadow(0 0 20px ${colors.primary}60)`,
+              ]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
+      </motion.div>
+      
       {/* Content with parallax */}
       <motion.div 
-        className="relative z-10 text-center px-6 max-w-4xl mx-auto"
+        className="relative z-10 text-center px-6 max-w-4xl mx-auto pointer-events-auto"
         style={{ opacity }}
       >
         {/* Logo in Hero */}

@@ -15,7 +15,7 @@ export function UserMenu() {
   const [isPatientDashboardOpen, setIsPatientDashboardOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const ADMIN_EMAILS = ['wojciech@bozemski.pl', 'patryk.siwkens@gmail.com'];
+  const ADMIN_EMAILS = ['wojciech@bozemski.pl', 'patryk.siwkens@gmail.com', 'admin@test.pl'];
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
   return (

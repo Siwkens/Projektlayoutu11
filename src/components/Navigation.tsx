@@ -120,14 +120,14 @@ export function Navigation({ onBookingClick }: NavigationProps) {
               whileTap={{ scale: 0.95 }}
             >
               <motion.div
-                className="w-12 h-12 relative flex items-center justify-center"
+                className="w-16 h-16 relative flex items-center justify-center"
                 whileHover={{ rotate: 5 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <img 
                   src={logoImg} 
                   alt="Logo" 
-                  className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                  className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]"
                 />
               </motion.div>
               <div className="hidden sm:block">

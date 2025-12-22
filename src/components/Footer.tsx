@@ -70,11 +70,11 @@ export function Footer() {
             viewport={{ once: true }}
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 relative">
+              <div className="w-16 h-16 relative">
                 <img 
                   src={logoImg} 
                   alt="Logo" 
-                  className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                  className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]"
                 />
               </div>
               <h3 className="text-white" style={{ fontSize: '1.5rem' }}>
