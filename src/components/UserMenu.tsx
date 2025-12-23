@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from './context/AuthContext';
 import { User, LogIn, Calendar, Settings, LogOut, LayoutDashboard } from 'lucide-react';
@@ -18,9 +18,22 @@ export function UserMenu() {
   const ADMIN_EMAILS = ['wojciech@bozemski.pl', 'patryk.siwkens@gmail.com', 'admin@test.pl'];
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (isMenuOpen && !target.closest('[data-user-menu]')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
+
   return (
     <>
-      <div className="fixed top-6 right-6 z-50">
+      <div className="fixed top-6 right-6 z-50" data-user-menu>
         <div className="relative">
           <motion.button
             whileHover={{ scale: 1.05 }}

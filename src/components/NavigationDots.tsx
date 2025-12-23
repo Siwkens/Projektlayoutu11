@@ -10,10 +10,12 @@ interface Section {
 const sections: Section[] = [
   { id: 'hero', label: 'Start' },
   { id: 'about', label: 'O mnie' },
-  { id: 'energy-system', label: 'Czakry' },
+  { id: 'chakra-map', label: 'Czakry' },
   { id: 'services', label: 'Usługi' },
-  { id: 'process', label: 'Proces' },
-  { id: 'testimonials', label: 'Opinie' },
+  { id: 'media', label: 'Media' },
+  { id: 'audio-zone', label: 'Audio' },
+  { id: 'blog', label: 'Blog' },
+  { id: 'faq', label: 'FAQ' },
 ];
 
 export function NavigationDots() {

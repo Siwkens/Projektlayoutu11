@@ -24,14 +24,17 @@ app.use(
 // Middleware to check for authorization header on Supabase Edge Functions
 app.use('/make-server-139d10cf/*', async (c, next) => {
   const authHeader = c.req.header('Authorization');
+  const requestPath = c.req.path;
+  const requestMethod = c.req.method;
   
   // Log all headers for debugging
-  console.log('📨 Incoming request to:', c.req.path);
-  console.log('📨 Request URL:', c.req.url);
-  console.log('📨 Request method:', c.req.method);
+  console.log('📨 ==================== INCOMING REQUEST ====================');
+  console.log('📨 Path:', requestPath);
+  console.log('📨 URL:', c.req.url);
+  console.log('📨 Method:', requestMethod);
   console.log('🔑 Authorization header present:', !!authHeader);
   
-  // For public endpoints (health, init-admin, create-admin, signup, blog GET), skip auth check
+  // For public endpoints (health, init-admin, create-admin, update-admin, signup, blog GET), skip auth check
   const publicEndpoints = [
     '/make-server-139d10cf/health',
     '/make-server-139d10cf/init-admin',
@@ -41,32 +44,45 @@ app.use('/make-server-139d10cf/*', async (c, next) => {
   ];
   
   // Check if it's a blog GET request (public)
-  const isBlogGetRequest = c.req.path.startsWith('/make-server-139d10cf/blog/articles') && 
-                          c.req.method === 'GET';
+  const isBlogGetRequest = requestPath.startsWith('/make-server-139d10cf/blog/articles') && 
+                          requestMethod === 'GET';
   
-  // Check if current path is public (use includes for exact match, or startsWith for flexibility)
+  // Check if current path is public (exact match OR startsWith for flexibility)
   const isPublicEndpoint = publicEndpoints.some(endpoint => 
-    c.req.path === endpoint || c.req.path.startsWith(endpoint)
+    requestPath === endpoint || requestPath.startsWith(endpoint + '/')
   );
   
+  console.log('🔍 Checking against public endpoints:');
+  publicEndpoints.forEach(endpoint => {
+    const exactMatch = requestPath === endpoint;
+    const startsWithMatch = requestPath.startsWith(endpoint + '/');
+    console.log(`  - ${endpoint}: exact=${exactMatch}, startsWith=${startsWithMatch}`);
+  });
   console.log('🔍 Is public endpoint?', isPublicEndpoint);
   console.log('🔍 Is blog GET request?', isBlogGetRequest);
   
   if (isPublicEndpoint || isBlogGetRequest) {
-    console.log('✅ Public endpoint - skipping auth check');
+    console.log('✅ PUBLIC ENDPOINT - SKIPPING AUTH CHECK');
+    console.log('📨 ========================================================');
     return await next();
   }
   
   // For protected endpoints, require auth
   if (!authHeader) {
-    console.error('❌ Missing authorization header for protected endpoint');
-    console.error('❌ Path was:', c.req.path);
+    console.error('❌ MISSING AUTHORIZATION HEADER FOR PROTECTED ENDPOINT');
+    console.error('❌ Path was:', requestPath);
+    console.error('❌ Expected one of:', publicEndpoints);
+    console.log('📨 ========================================================');
     return c.json({ 
       code: 401,
-      message: "Missing authorization header" 
+      message: "Missing authorization header",
+      path: requestPath,
+      hint: "This endpoint requires authentication. Public endpoints: " + publicEndpoints.join(', ')
     }, 401);
   }
   
+  console.log('✅ Authorization header present - proceeding');
+  console.log('📨 ========================================================');
   return await next();
 });
 

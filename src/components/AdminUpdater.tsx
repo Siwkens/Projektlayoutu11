@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { projectId } from '../utils/supabase/info';
+import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 /**
  * Komponent testowy do aktualizacji konta administratora
@@ -82,6 +82,7 @@ export function AdminUpdater() {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${publicAnonKey}`,
           },
           body: JSON.stringify({
             oldEmail: 'admin@test.pl',

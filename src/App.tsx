@@ -149,7 +149,7 @@ function AppContent() {
                <ChakraSystemSection />
             </SectionTransition>
             
-            <SectionTransition>
+            <SectionTransition id="services">
               <ServicesSection />
             </SectionTransition>
             

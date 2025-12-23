@@ -65,6 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${publicAnonKey}`,
           },
           body: JSON.stringify({ email, password }),
         }

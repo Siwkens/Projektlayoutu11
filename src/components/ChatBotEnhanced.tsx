@@ -39,7 +39,7 @@ const knowledgeBase: KnowledgeBase[] = [
     response: '✨ Czakry to centra energetyczne w ciele. Pracuję z 7 głównymi czakrami: od korzeniowej (podstawowa) po koronową (duchową). Każda czakra odpowiada za inne aspekty życia - fizyczne, emocjonalne i duchowe. Podczas sesji diagnozuję i harmonizuję przepływ energii przez wszystkie czakry.',
     category: 'chakras',
     suggestedActions: [
-      { type: 'scroll_to', label: 'Zobacz system energetyczny', data: 'energy-system' }
+      { type: 'scroll_to', label: 'Zobacz system energetyczny', data: 'chakra-map' }
     ]
   },
   {
@@ -309,7 +309,7 @@ export function ChatBot({ isOpen: externalIsOpen, onClose: externalOnClose, onBo
   const smartQuickActions: SmartAction[] = [
     { type: 'booking', label: '📅 Umów sesję', data: null },
     { type: 'mood_change', label: '🎨 Zmień nastrój', data: 'stress' },
-    { type: 'scroll_to', label: '✨ Zobacz czakry', data: 'energy-system' }
+    { type: 'scroll_to', label: '✨ Zobacz czakry', data: 'chakra-map' }
   ];
 
   return (
