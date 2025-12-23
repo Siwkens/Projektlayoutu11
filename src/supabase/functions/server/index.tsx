@@ -27,17 +27,32 @@ app.use('/make-server-139d10cf/*', async (c, next) => {
   
   // Log all headers for debugging
   console.log('📨 Incoming request to:', c.req.path);
+  console.log('📨 Request URL:', c.req.url);
+  console.log('📨 Request method:', c.req.method);
   console.log('🔑 Authorization header present:', !!authHeader);
   
-  // For public endpoints (health, init-admin, create-admin, signup), skip auth check
+  // For public endpoints (health, init-admin, create-admin, signup, blog GET), skip auth check
   const publicEndpoints = [
     '/make-server-139d10cf/health',
     '/make-server-139d10cf/init-admin',
     '/make-server-139d10cf/create-admin',
+    '/make-server-139d10cf/update-admin',
     '/make-server-139d10cf/signup'
   ];
   
-  if (publicEndpoints.includes(c.req.path)) {
+  // Check if it's a blog GET request (public)
+  const isBlogGetRequest = c.req.path.startsWith('/make-server-139d10cf/blog/articles') && 
+                          c.req.method === 'GET';
+  
+  // Check if current path is public (use includes for exact match, or startsWith for flexibility)
+  const isPublicEndpoint = publicEndpoints.some(endpoint => 
+    c.req.path === endpoint || c.req.path.startsWith(endpoint)
+  );
+  
+  console.log('🔍 Is public endpoint?', isPublicEndpoint);
+  console.log('🔍 Is blog GET request?', isBlogGetRequest);
+  
+  if (isPublicEndpoint || isBlogGetRequest) {
     console.log('✅ Public endpoint - skipping auth check');
     return await next();
   }
@@ -45,6 +60,7 @@ app.use('/make-server-139d10cf/*', async (c, next) => {
   // For protected endpoints, require auth
   if (!authHeader) {
     console.error('❌ Missing authorization header for protected endpoint');
+    console.error('❌ Path was:', c.req.path);
     return c.json({ 
       code: 401,
       message: "Missing authorization header" 
@@ -312,6 +328,216 @@ app.post("/make-server-139d10cf/create-admin", async (c) => {
     });
   } catch (e) {
     console.error("❌ Admin create exception:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Update Admin Account (change email/password)
+app.put("/make-server-139d10cf/update-admin", async (c) => {
+  try {
+    const { oldEmail, newEmail, newPassword } = await c.req.json();
+    
+    console.log('🔧 Otrzymano żądanie aktualizacji admina:', { oldEmail, newEmail });
+    
+    if (!oldEmail) {
+      console.error('❌ Brak starego emaila');
+      return c.json({ error: "Stary email jest wymagany" }, 400);
+    }
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
+    console.log('📋 Wyszukiwanie użytkownika:', oldEmail);
+    
+    // Find user by old email
+    const { data: existingUsers, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('❌ Błąd podczas sprawdzania użytkowników:', listError);
+      return c.json({ error: listError.message }, 500);
+    }
+    
+    const user = existingUsers?.users.find(u => u.email === oldEmail);
+
+    if (!user) {
+      console.log('❌ Użytkownik nie istnieje:', oldEmail);
+      return c.json({ 
+        error: `Użytkownik ${oldEmail} nie został znaleziony` 
+      }, 404);
+    }
+
+    console.log('✅ Znaleziono użytkownika:', user.id);
+    console.log('🔄 Aktualizowanie danych użytkownika...');
+    
+    // Update user email and/or password
+    const updateData: any = {};
+    
+    if (newEmail && newEmail !== oldEmail) {
+      updateData.email = newEmail;
+      updateData.email_confirm = true;
+    }
+    
+    if (newPassword) {
+      updateData.password = newPassword;
+    }
+
+    const { data: updatedUser, error: updateError } = await supabase.auth.admin.updateUserById(
+      user.id,
+      updateData
+    );
+
+    if (updateError) {
+      console.error("❌ Admin update error:", updateError);
+      return c.json({ error: updateError.message }, 400);
+    }
+
+    console.log('✅ Użytkownik zaktualizowany pomyślnie');
+
+    return c.json({ 
+      message: "Konto administratora zostało zaktualizowane pomyślnie",
+      oldEmail: oldEmail,
+      newEmail: newEmail || oldEmail,
+      userId: user.id,
+      passwordChanged: !!newPassword,
+      info: "Dane administratora zostały zmienione!"
+    });
+  } catch (e) {
+    console.error("❌ Admin update exception:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// --- Blog Article Routes ---
+
+// Get all blog articles (public, no auth required)
+app.get("/make-server-139d10cf/blog/articles", async (c) => {
+  try {
+    const articles = await kv.getByPrefix("blog_article_");
+    
+    // Sort by created_at descending (newest first)
+    const sortedArticles = articles.sort((a: any, b: any) => 
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+    
+    return c.json(sortedArticles);
+  } catch (e) {
+    console.error("Get blog articles error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Get single blog article by ID (public)
+app.get("/make-server-139d10cf/blog/articles/:id", async (c) => {
+  try {
+    const id = c.req.param('id');
+    const article = await kv.get(`blog_article_${id}`);
+    
+    if (!article) {
+      return c.json({ error: "Article not found" }, 404);
+    }
+    
+    return c.json(article);
+  } catch (e) {
+    console.error("Get blog article error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Create blog article (Admin only)
+app.post("/make-server-139d10cf/blog/articles", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+    if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
+
+    const body = await c.req.json();
+    const id = crypto.randomUUID();
+    
+    // Validation
+    if (!body.title || !body.content) {
+      return c.json({ error: "Title and content are required" }, 400);
+    }
+
+    const article = {
+      id,
+      title: body.title,
+      excerpt: body.excerpt || "",
+      content: body.content, // HTML content
+      category: body.category || "Wiedza podstawowa",
+      image: body.image || "",
+      readTime: body.readTime || "5 min czytania",
+      author: user.user_metadata?.name || user.email,
+      author_id: user.id,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      published: body.published !== undefined ? body.published : true,
+    };
+    
+    await kv.set(`blog_article_${id}`, article);
+    return c.json(article);
+  } catch (e) {
+    console.error("Create blog article error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Update blog article (Admin only)
+app.put("/make-server-139d10cf/blog/articles/:id", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+    if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
+
+    const id = c.req.param('id');
+    const body = await c.req.json();
+    
+    const article = await kv.get(`blog_article_${id}`);
+    if (!article) return c.json({ error: "Article not found" }, 404);
+    
+    const updatedArticle = {
+      ...article,
+      ...body,
+      id: article.id, // Keep original ID
+      author_id: article.author_id, // Keep original author
+      created_at: article.created_at, // Keep original creation date
+      updated_at: new Date().toISOString(),
+    };
+    
+    await kv.set(`blog_article_${id}`, updatedArticle);
+    return c.json(updatedArticle);
+  } catch (e) {
+    console.error("Update blog article error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Delete blog article (Admin only)
+app.delete("/make-server-139d10cf/blog/articles/:id", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+    if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
+
+    const id = c.req.param('id');
+    const article = await kv.get(`blog_article_${id}`);
+    
+    if (!article) return c.json({ error: "Article not found" }, 404);
+    
+    await kv.del(`blog_article_${id}`);
+    return c.json({ message: "Article deleted successfully" });
+  } catch (e) {
+    console.error("Delete blog article error:", e);
     return c.json({ error: e.message }, 500);
   }
 });

@@ -102,7 +102,7 @@ const mediaArticles = [
 
       <h3 style="color: rgba(255,255,255,0.95); margin-top: 2rem; margin-bottom: 1.5rem; font-size: 1.4rem;">Podejście terapeuty</h3>
 
-      <p>Pan Wojciech Bożemski jedynie kilka słów wycieczył. Co zasięganie określeniem pośredno, że terciepień poplełnią stanowi jakieko po przyszłośceni, pomagą również przed po zablieżniei oraz (operacjach medycznych), przywręceni po nich ewentu przynajnieniu do słowni życia i synem jako mało niezbędnych możliwości.</p>
+      <p>Pan Wojciech Bożemski jedynie kilka słów wycieczył. Co zasięganie określeniem pośredno, że terciepień poplełnią stanowi jakieko po przyszłośceni, pomagają również przed po zablieżniei oraz (operacjach medycznych), przywręceni po nich ewentu przynajnieniu do słowni życia i synem jako mało niezbędnych możliwości.</p>
 
       <p>Ksła to doświadczenie osobistera kontaktuj ze sposób Wojciecha Bożemskiego mieści lat treningową. Dziękają temu je jego pomięty mogą rozprostanie się po różnych zakresach lud najboższy terapii zańoszciwości życia występuszeć jest współpracujący zamiany.</p>
 
@@ -135,7 +135,7 @@ const mediaArticles = [
 
       <h3 style="color: rgba(255,255,255,0.95); margin-top: 2rem; margin-bottom: 1.5rem; font-size: 1.4rem;">Jak działa bioenergoterapia?</h3>
 
-      <p>Bioenergoterapeuta jest niekonwencjonalną metodą leczenia, znaną od lat tysięcy lat, zaliczaną do medycyny niekonwencjonalnej. Jest określana jako działowanie energią, miejsce u przyczyą w pierwszego podczas koania i wejścia. Zostanie bioenergot jest styminącją jako kończyny paragne, związującą możliwości wyrażnienia.</p>
+      <p>Bioenergoterapeuta jest niekonwencjonalną metodą leczenia, znaną od lat tysięcy lat, zaliczaną do medycyny niekonwencjonalnej. Jest określana jako działanie energią, miejsce u przyczyą w pierwszego podczas koania i wejścia. Zostanie bioenergot jest styminącją jako kończyny paragne, związującą możliwości wyrażnienia.</p>
 
       <p>Najodkła terenu, którego się od i przyycyjnych przestali leczenia, wnikając u przestrzeniego tysięcy lat egipskiej luźniacy. Są nazywane i bazują licznie kultury, hiedzige religie i rezult, są po współczesnie się długą właskowacji dowodów lub pod stromy najczego.</p>
 
@@ -191,7 +191,7 @@ const mediaArticles = [
 
       <h3 style="color: rgba(255,255,255,0.95); margin-top: 2rem; margin-bottom: 1.5rem; font-size: 1.4rem;">Praktyczne zastosowanie</h3>
 
-      <p>Naczonym celem moją pośredność jest siabmać i usunąć zawięstwie mają bezpościredaną bezczasomie stanową emocje i stany świadcości mają bezpośmie szczegółności. Organizm stanowi jednak pewien system, który należy odnosić komplendentami. Powyeszy harmoność jest ustawiającym i uzdrownościami poderzy równię - i chemoterapii oraz ustrawianiu odnowu i świętego samopoczucia oraz tej waprozmożjujści się przecławażące przemieszczającą się o metaboliczny i konkrętne choroby oraz przyczyną się do powrotu do zdrowia.</p>
+      <p>Naczonym celem moją pośredność jest siabmać i usunąć zawięstwie mają bezpościredaną bezczasomie stanową emocje i stany świadcości mają bezpośmie szczegółności. Organizm stanowi jednak pewien system, który należy odnosić komplendentami. Powyeszy harmoność jest ustawiającym i uzdrownościami poderzy równię - i chemoterapii oraz ustrawianiu odnowu i świętego samopoczucia oraz tej waprozmożjujści się przecławaczące przemieszczającą się o metaboliczny i konkrętne choroby oraz przyczyną się do powrotu do zdrowia.</p>
 
       <h3 style="color: rgba(255,255,255,0.95); margin-top: 2rem; margin-bottom: 1.5rem; font-size: 1.4rem;">Protokoły i metody</h3>
 
@@ -223,6 +223,13 @@ const mediaArticles = [
 
 export function MediaCoverageSection() {
   const [selectedArticle, setSelectedArticle] = useState<typeof mediaArticles[0] | null>(null);
+  const [showAll, setShowAll] = useState(false);
+
+  // Sortuj artykuły od najnowszych
+  const sortedArticles = [...mediaArticles].sort((a, b) => b.id - a.id);
+  
+  // Pokaż tylko 4 najnowsze lub wszystkie w zależności od stanu
+  const displayedArticles = showAll ? sortedArticles : sortedArticles.slice(0, 4);
 
   return (
     <>
@@ -256,7 +263,7 @@ export function MediaCoverageSection() {
 
           {/* Articles Grid */}
           <div className="grid md:grid-cols-2 gap-8">
-            {mediaArticles.map((article, index) => (
+            {displayedArticles.map((article, index) => (
               <motion.article
                 key={article.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -414,8 +421,28 @@ export function MediaCoverageSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
-            className="text-center mt-16"
+            className="text-center mt-16 space-y-6"
           >
+            {/* Przycisk "Przeglądaj wszystkie" - pokazuje się tylko gdy są ukryte artykuły */}
+            {!showAll && sortedArticles.length > 4 && (
+              <motion.button
+                onClick={() => setShowAll(true)}
+                className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600/30 to-blue-600/30 border border-purple-400/30 text-white hover:from-purple-600/40 hover:to-blue-600/40 transition-all group"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: '0 10px 40px rgba(139, 92, 246, 0.4)',
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="flex items-center gap-3">
+                  <Newspaper className="w-5 h-5" />
+                  <span className="font-medium">Przeglądaj wszystkie ({sortedArticles.length})</span>
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </motion.button>
+            )}
+
+            {/* Komunikat o współpracy z mediami */}
             <motion.div 
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-white/10"
               whileHover={{ 

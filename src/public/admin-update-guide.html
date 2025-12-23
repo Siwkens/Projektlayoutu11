@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrukcja - Aktualizacja Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 20px;
+            margin: 30px 0 15px;
+            color: #ffd700;
+        }
+        h3 {
+            font-size: 18px;
+            margin: 20px 0 10px;
+            color: #87ceeb;
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.2);
+            border-left: 4px solid #ffd700;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .success-box {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .step {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #87ceeb;
+        }
+        .method {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        .big-code {
+            display: block;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 20px 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        ul {
+            margin-left: 20px;
+        }
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Aktualizacja Konta Admin</h1>
+        
+        <div class="info-box">
+            <strong>🎯 Co zostanie zmienione?</strong><br>
+            <strong>Stary email:</strong> admin@test.pl<br>
+            <strong>Nowy email:</strong> wojciech@bozemski.pl<br>
+            <strong>Nowe hasło:</strong> Wojciech123!
+        </div>
+
+        <h2>🔓 Wybierz metodę aktywacji:</h2>
+
+        <div class="method">
+            <h3>✅ METODA 1: URL Parameter (NAJŁATWIEJSZA)</h3>
+            <div class="step">
+                1. Kliknij przycisk poniżej aby otworzyć stronę z parametrem:<br>
+                <a href="/?admin=true" class="btn">🚀 Otwórz panel Admin</a>
+            </div>
+            <div class="step">
+                2. Panel pojawi się automatycznie
+            </div>
+            <div class="step">
+                3. Kliknij "Zaktualizuj konto"
+            </div>
+        </div>
+
+        <div class="method">
+            <h3>✅ METODA 2: Magiczny Dotyk</h3>
+            <div class="step">
+                1. Wróć do głównej strony
+            </div>
+            <div class="step">
+                2. Szybko tapnij <strong>5 razy</strong> w <strong>prawy górny róg</strong> ekranu
+            </div>
+            <div class="step">
+                3. Zobaczysz licznik: "1/5 tap", "2/5 tap"...
+            </div>
+            <div class="step">
+                4. Po 5 tapnięciu pojawi się panel
+            </div>
+        </div>
+
+        <h2>🚀 Kroki aktualizacji:</h2>
+        
+        <div class="step">
+            <strong>KROK 1:</strong> Aktywuj panel (użyj jednej z metod powyżej)
+        </div>
+        
+        <div class="step">
+            <strong>KROK 2:</strong> Kliknij przycisk "Zaktualizuj konto"
+        </div>
+        
+        <div class="step">
+            <strong>KROK 3:</strong> Poczekaj na komunikat
+        </div>
+        
+        <div class="success-box">
+            <strong>✅ Sukces!</strong><br>
+            Po udanej aktualizacji zobaczysz:<br>
+            "Sukces! Email: wojciech@bozemski.pl"
+        </div>
+
+        <div class="step">
+            <strong>KROK 4:</strong> Zamknij panel
+        </div>
+
+        <div class="step">
+            <strong>KROK 5:</strong> Zaloguj się nowymi danymi
+        </div>
+
+        <h2>🔐 Nowe dane logowania:</h2>
+        
+        <div class="success-box">
+            <code class="big-code">
+Email: wojciech@bozemski.pl<br>
+Hasło: Wojciech123!
+            </code>
+        </div>
+
+        <h2>❓ Problemy?</h2>
+
+        <div class="warning-box">
+            <strong>Panel się nie pojawia?</strong><br>
+            • Użyj Metody 1 (przycisk powyżej)<br>
+            • Przy Metodzie 2 tapnij dokładnie w róg<br>
+            • Tapnij szybciej (w ciągu 2 sekund)
+        </div>
+
+        <div class="warning-box">
+            <strong>Błąd "401 Unauthorized"?</strong><br>
+            • Sprawdź logi w konsoli Chrome<br>
+            • Zgłoś dokładny komunikat błędu
+        </div>
+
+        <div class="warning-box">
+            <strong>Błąd "User not found"?</strong><br>
+            • Konto admin@test.pl nie istnieje<br>
+            • Najpierw utwórz konto admina
+        </div>
+
+        <h2>💡 Wskazówki:</h2>
+        
+        <ul>
+            <li>Po aktualizacji usuń <code>?admin=true</code> z URL</li>
+            <li>Panel jest bezpieczny - wymaga specjalnej aktywacji</li>
+            <li>Można go używać wielokrotnie</li>
+            <li>Wszystkie logi widoczne w konsoli przeglądarki</li>
+        </ul>
+
+        <div class="info-box" style="margin-top: 30px; text-align: center;">
+            <strong>🎉 Gotowe!</strong><br>
+            Po aktualizacji możesz się zalogować i zarządzać treścią jako administrator.
+        </div>
+
+        <a href="/" class="btn" style="margin-top: 30px;">← Powrót do strony głównej</a>
+    </div>
+</body>
+</html>

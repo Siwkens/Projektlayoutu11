@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
+import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -25,7 +26,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0a0a1a] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-gradient-to-b from-[#0a0a1a] via-[#1a0a2a] to-[#0a0a1a] flex items-center justify-center"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
@@ -55,23 +56,31 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         ))}
       </div>
 
-      {/* 3D Logo */}
+      {/* Logo with 3D effect */}
       <div className="relative" style={{ perspective: '1000px' }}>
         <motion.div
           className="relative"
           animate={{
-            rotateY: 360,
+            rotateY: [0, 360],
+            scale: [1, 1.05, 1],
           }}
           transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "linear"
+            rotateY: {
+              duration: 3,
+              repeat: Infinity,
+              ease: "linear"
+            },
+            scale: {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
           }}
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {/* Front face */}
+          {/* Logo container with glow effect */}
           <motion.div
-            className="w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-white shadow-2xl"
+            className="w-48 h-48 rounded-3xl flex items-center justify-center overflow-hidden"
             animate={{
               boxShadow: [
                 '0 0 40px rgba(167, 139, 250, 0.5)',
@@ -84,7 +93,11 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
               repeat: Infinity,
             }}
           >
-            <span style={{ fontSize: '3rem', fontWeight: '300' }}>WB</span>
+            <img 
+              src={logoImg} 
+              alt="Wojciech Bożemski Logo" 
+              className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(168,85,247,0.8)]"
+            />
           </motion.div>
         </motion.div>
 
@@ -111,7 +124,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             <motion.div
               className="w-3 h-3 bg-purple-400 rounded-full"
               style={{
-                x: 80 + i * 20,
+                x: 100 + i * 30,
               }}
               animate={{
                 scale: [1, 1.5, 1],
