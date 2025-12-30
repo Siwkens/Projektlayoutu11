@@ -2,9 +2,33 @@
   import { defineConfig } from 'vite';
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
+  import fs from 'node:fs';
 
   export default defineConfig({
-    plugins: [react()],
+    plugins: [
+      react(),
+      {
+        name: 'figma-asset-fallback',
+        resolveId(id) {
+          if (id.startsWith('figma:asset/')) return `\0figma-asset:${id}`;
+          return null;
+        },
+        load(id) {
+          if (!id.startsWith('\0figma-asset:')) return null;
+
+          const original = id.slice('\0figma-asset:'.length);
+          const fileName = original.slice('figma:asset/'.length);
+          const candidatePath = path.resolve(__dirname, './src/assets', fileName);
+
+          if (fs.existsSync(candidatePath)) {
+            return `export { default } from ${JSON.stringify(candidatePath)};`;
+          }
+
+          // If the Figma-exported asset isn't present locally, compile anyway.
+          return `export default "";`;
+        },
+      },
+    ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
