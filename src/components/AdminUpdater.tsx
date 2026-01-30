@@ -87,7 +87,7 @@ export function AdminUpdater() {
           body: JSON.stringify({
             oldEmail: 'admin@test.pl',
             newEmail: 'wojciech@bozemski.pl',
-            newPassword: 'Wojciech123!',
+            newPassword: 'Wojciech2026',
           }),
         }
       );

@@ -1,12 +1,12 @@
-import { motion, useScroll, useTransform } from 'motion/react';
 import { useState } from 'react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
-import { useRipple } from './RippleEffect';
-import { TextScramble } from './effects/TextScramble';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Magnetic } from './effects/Magnetic';
 import { useMood } from './context/MoodContext';
-import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
-import atomImg from 'figma:asset/20bd66bcebd6cde094134f51d7369c09fc04dc0c.png';
+import { useRipple } from './effects/Ripple';
+import { TextScramble } from './effects/TextScramble';
+import logoImg from "figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png";
+// Używamy logo jako obrazu atomu/energii
+import atomImg from "figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png";
 
 export function HeroSection() {
   const { scrollY } = useScroll();

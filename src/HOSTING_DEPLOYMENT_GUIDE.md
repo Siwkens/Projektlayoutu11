@@ -574,7 +574,7 @@ Gratulacje! Twoja strona jest live na własnym hostingu!
 
 1. **Zmień konto admin** (Ctrl+Alt+U):
    - Email: wojciech@bozemski.pl
-   - Hasło: Wojciech123!
+   - Hasło: Wojciech2026
 
 2. **Dodaj prawdziwe artykuły bloga** (Panel Administratora)
 

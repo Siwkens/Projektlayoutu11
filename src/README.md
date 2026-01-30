@@ -364,20 +364,20 @@ Po wdrożeniu, zmień konto admin:
 1. Naciśnij `Ctrl+Alt+U` lub dodaj `?admin=true` do URL
 2. Wprowadź nowe dane:
    - Email: `wojciech@bozemski.pl`
-   - Hasło: `Wojciech123!`
+   - Hasło: `Wojciech2026`
 3. Kliknij "Aktualizuj konto administratora"
 
 ### Lista Adminów
 
 Edytuj w plikach:
-- `/components/admin/AdminDashboard.tsx` (linia 14)
-- `/components/UserMenu.tsx` (linia 44)
+- `/components/admin/AdminDashboard.tsx` (linia 29)
+- `/components/UserMenu.tsx` (linia 18)
 
 ```typescript
 const ADMIN_EMAILS = [
   "wojciech@bozemski.pl",
-  "patryk.siwkens@gmail.com",
-  // Dodaj kolejne emaile adminów
+  "bozemskiw@gmail.com",
+  "patryk.siwkens@gmail.com"
 ];
 ```
 

@@ -70,6 +70,7 @@ Service Role Key: ✅ Zabezpieczony (env variable)
 ```javascript
 const ADMIN_EMAILS = [
   "wojciech@bozemski.pl",  // ✅ Nowe konto główne
+  "bozemskiw@gmail.com",   // ✅ Główny admin
   "patryk.siwkens@gmail.com", // ✅ Główny dev
   "admin@test.pl"  // ✅ Testowe (do usunięcia po wdrożeniu)
 ];
@@ -91,18 +92,22 @@ const ADMIN_EMAILS = [
 
 ## ✅ 4. KOMPONENTY I FUNKCJONALNOŚCI
 
-### Główne Sekcje (wszystkie z prawidłowymi ID)
-- ✅ **HeroSection** - Landing page z animacjami
-- ✅ **AboutSection** - `id="about"`
-- ✅ **ChakraSystemSection** - `id="chakra-map"` (interaktywna mapa 3D)
-- ✅ **ServicesSection** - `id="services"` (flip cards)
-- ✅ **StatsSection** - Liczniki z animacjami
+### Sekcje strony (kolejność zgodna z App.tsx)
+
+- ✅ **HeroSection** - Landing (brak ID, scroll to top)
+- ✅ **AboutSection** - `id="about"` (O mnie)
+- ✅ **ChakraSystemSection** - `id="chakra-map"` (3D Interactive Map)
+- ✅ **ServicesSection** - `id="services"` (3D Depth Layer Cards - Hand, Infinity, Radio, Shield icons)
 - ✅ **MediaCoverageSection** - `id="media"`
 - ✅ **AudioZoneSection** - `id="audio-zone"` (odtwarzacz audio)
-- ✅ **TestimonialsSection** - Opinie klientów
 - ✅ **BlogSection** - `id="blog"` (artykuły z backend)
 - ✅ **FAQSection** - `id="faq"` (accordion)
-- ✅ **Footer** - Stopka z kontaktem
+- ✅ **Footer** - Stopka (social links, copyright)
+
+**USUNIĘTE SEKCJE:**
+- ❌ **GallerySection** - Galeria (usunięta)
+- ❌ **TestimonialsSection** - Opinie klientów (usunięta)
+- ❌ **StatsSection** - Statystyki (usunięta)
 
 ### Interaktywne Komponenty
 - ✅ **Navigation** - Sticky navbar z active detection
@@ -222,10 +227,10 @@ moods = {
 
 ## ✅ 8. OBRAZY I ASSETS
 
-### Figma Assets
-- ✅ Logo Wojciecha Bożemskiego (`figma:asset/be2780475...`)
+### Zasoby (Assets)
+- ✅ Logo Wojciecha Bożemskiego (`/assets/logo.png`)
 - ✅ Wszystkie SVG wektory importowane z `/imports`
-- ✅ Raster images przez `figma:asset` scheme
+- ✅ Obrazy rastrowe przez lokalne ścieżki (np. `@/assets/article1.png`)
 - ✅ Fallback przez ImageWithFallback component
 
 ### Unsplash Integration

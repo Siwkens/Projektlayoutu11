@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { X, Info } from 'lucide-react';
 import { SectionDivider } from './SectionDivider';

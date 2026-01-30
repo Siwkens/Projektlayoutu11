@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Sparkles, Zap, Calendar, Heart, Palette } from 'lucide-react';
 import { useMood } from './context/MoodContext';
 

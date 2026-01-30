@@ -5,7 +5,7 @@ import { projectId } from './supabase/info';
  * Użyj w konsoli przeglądarki:
  * 
  * import { updateAdminAccount } from './utils/updateAdmin';
- * updateAdminAccount('admin@test.pl', 'wojciech@bozemski.pl', 'Wojciech123!');
+ * updateAdminAccount('admin@test.pl', 'wojciech@bozemski.pl', 'Wojciech2026');
  */
 export async function updateAdminAccount(
   oldEmail: string,
@@ -52,13 +52,13 @@ export async function updateAdminAccount(
 }
 
 // Wywołaj funkcję automatycznie
-updateAdminAccount('admin@test.pl', 'wojciech@bozemski.pl', 'Wojciech123!')
+updateAdminAccount('admin@test.pl', 'wojciech@bozemski.pl', 'Wojciech2026')
   .then(() => {
     console.log('');
     console.log('🎉 Konto administratora zostało zaktualizowane!');
     console.log('🔐 Możesz się teraz zalogować używając:');
     console.log('   Email: wojciech@bozemski.pl');
-    console.log('   Hasło: Wojciech123!');
+    console.log('   Hasło: Wojciech2026');
   })
   .catch((error) => {
     console.error('💥 Nie udało się zaktualizować konta:', error.message);

@@ -67,7 +67,7 @@ https://upslsklauyerlkyisngq.supabase.co/functions/v1/make-server-139d10cf
   "oldEmail": "admin@test.pl",
   "oldPassword": "Admin123!",
   "newEmail": "wojciech@bozemski.pl",
-  "newPassword": "Wojciech123!"
+  "newPassword": "Wojciech2026"
 }
 ```
 
@@ -227,12 +227,11 @@ const sections = [
   'about',       // O mnie
   'chakra-map',  // System czakr (3D)
   'services',    // Usługi (flip cards)
-  // StatsSection - brak ID
   'media',       // Media coverage
   'audio-zone',  // Strefa audio
-  // TestimonialsSection - brak ID
   'blog',        // Blog
   'faq'          // FAQ
+  // USUNIĘTE: gallery, testimonials, stats
 ];
 ```
 
@@ -262,6 +261,7 @@ function scrollToSection(id: string) {
 // W komponentach: AdminDashboard, UserMenu
 const ADMIN_EMAILS = [
   "wojciech@bozemski.pl",    // Główny admin
+  "bozemskiw@gmail.com",     // Admin główny
   "patryk.siwkens@gmail.com", // Dev admin
   "admin@test.pl"             // Testowy (do usunięcia)
 ];
@@ -343,13 +343,13 @@ const knowledgeBase = [
 
 ## 🖼️ OBRAZY I ASSETS
 
-### Figma Assets (raster images)
+### Lokalizowane Zasoby (Local Assets)
 ```typescript
-// POPRAWNIE (bez ścieżek!)
-import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
+// POPRAWNIE (używając aliasu @/assets)
+import logoImg from '@/assets/logo.png';
 
-// ❌ BŁĘDNIE
-import logoImg from './imports/figma:asset/abc123.png';
+// ❌ BŁĘDNIE (stary system figma:asset)
+// import logoImg from 'figma:asset/...';
 ```
 
 ### SVG Vectors

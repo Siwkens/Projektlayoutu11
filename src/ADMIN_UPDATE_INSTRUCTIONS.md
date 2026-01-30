@@ -3,7 +3,7 @@
 ## 🎯 Co zostanie zmienione?
 - **Stary email:** admin@test.pl
 - **Nowy email:** wojciech@bozemski.pl
-- **Nowe hasło:** Wojciech123!
+- **Nowe hasło:** Wojciech2026
 
 ---
 
@@ -87,17 +87,8 @@
 ✅ **Nowe dane logowania:**
 ```
 Email: wojciech@bozemski.pl
-Hasło: Wojciech123!
+Hasło: Wojciech2026
 ```
-
-✅ **Zaloguj się:**
-1. Kliknij ikonę użytkownika (UserMenu)
-2. Wpisz nowy email i hasło
-3. Kliknij "Zaloguj się"
-
-✅ **Sprawdź uprawnienia:**
-- Po zalogowaniu powinieneś mieć dostęp do panelu admina
-- Możesz zarządzać artykułami w sekcji Blog
 
 ---
 

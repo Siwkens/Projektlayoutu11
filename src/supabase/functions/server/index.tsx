@@ -150,7 +150,7 @@ app.get("/make-server-139d10cf/bookings", async (c) => {
     const bookings = await kv.getByPrefix("booking_");
     
     // Admin Check
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "bozemskiw@gmail.com", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     
     if (isAdmin) {
@@ -172,7 +172,7 @@ app.patch("/make-server-139d10cf/bookings/:id", async (c) => {
     const user = await getUser(c.req.raw);
     if (!user) return c.json({ error: "Unauthorized" }, 401);
     
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "bozemskiw@gmail.com", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     if (!isAdmin) return c.json({ error: "Forbidden" }, 403);
 
@@ -467,7 +467,7 @@ app.post("/make-server-139d10cf/blog/articles", async (c) => {
     const user = await getUser(c.req.raw);
     if (!user) return c.json({ error: "Unauthorized" }, 401);
     
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "bozemskiw@gmail.com", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
 
@@ -508,7 +508,7 @@ app.put("/make-server-139d10cf/blog/articles/:id", async (c) => {
     const user = await getUser(c.req.raw);
     if (!user) return c.json({ error: "Unauthorized" }, 401);
     
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "bozemskiw@gmail.com", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
 
@@ -541,7 +541,7 @@ app.delete("/make-server-139d10cf/blog/articles/:id", async (c) => {
     const user = await getUser(c.req.raw);
     if (!user) return c.json({ error: "Unauthorized" }, 401);
     
-    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "bozemskiw@gmail.com", "patryk.siwkens@gmail.com", "admin@test.pl"];
     const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
     if (!isAdmin) return c.json({ error: "Forbidden - Admin only" }, 403);
 

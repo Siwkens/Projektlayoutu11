@@ -15,7 +15,7 @@ export function UserMenu() {
   const [isPatientDashboardOpen, setIsPatientDashboardOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const ADMIN_EMAILS = ['wojciech@bozemski.pl', 'patryk.siwkens@gmail.com', 'admin@test.pl'];
+  const ADMIN_EMAILS = ['wojciech@bozemski.pl', 'bozemskiw@gmail.com', 'patryk.siwkens@gmail.com', 'admin@test.pl'];
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
   // Close menu when clicking outside

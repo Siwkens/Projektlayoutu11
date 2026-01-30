@@ -33,7 +33,7 @@
    
    Nowe dane:
    Email: wojciech@bozemski.pl
-   Hasło: Wojciech123!
+   Hasło: Wojciech2026
    
 4. Kliknij "Aktualizuj konto administratora"
 5. Zaloguj się nowym kontem
@@ -207,7 +207,7 @@ Po wykonaniu wszystkich kroków Twoja strona jest:
 ### Konto Administratora (PO ZMIANIE)
 ```
 Email: wojciech@bozemski.pl
-Hasło: Wojciech123!
+Hasło: Wojciech2026
 ```
 
 ### Supabase Dashboard

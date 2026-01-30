@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Volume2, SkipBack, SkipForward, Music, Headphones } from 'lucide-react';
 import { SectionDivider } from './SectionDivider';

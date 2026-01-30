@@ -1,6 +1,6 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Youtube, Heart, ExternalLink } from 'lucide-react';
-import logoImg from 'figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png';
+import logoImg from "figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png";
 
 const contactInfo = {
   phone: '+48 509 674 129',

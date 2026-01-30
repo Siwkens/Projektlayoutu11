@@ -1,11 +1,9 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence } from 'framer-motion';
 import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
 import { ServicesSection } from './components/ServicesSection';
 import { MediaCoverageSection } from './components/MediaCoverageSection';
-import { StatsSection } from './components/StatsSection';
-import { TestimonialsSection } from './components/TestimonialsSection';
 import { BlogSection } from './components/BlogSection';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
@@ -25,10 +23,10 @@ import { UserMenu } from './components/UserMenu';
 import { ChatBot } from './components/ChatBotEnhanced';
 import { BookingModal } from './components/booking/BookingModal';
 import { SmoothScrollContainer } from './components/SmoothScroll';
-import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { SectionTransition } from './components/PageTransition';
 import { NavigationDots } from './components/NavigationDots';
-import { AdminUpdater } from './components/AdminUpdater';
+import { SocialWidget } from './components/SocialWidget';
+import { SEOHead } from './components/SEOHead';
 
 // Lazy load heavy 3D components for better performance
 const CosmicScene = lazy(() => 
@@ -64,6 +62,9 @@ function AppContent() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead />
+      
       <AnimatePresence>
         {isLoading && (
           <LoadingScreen onComplete={() => setIsLoading(false)} />
@@ -115,6 +116,18 @@ function AppContent() {
           {/* Navigation Dots */}
           <NavigationDots />
           
+          {/* Social Media Widget - Google Business + Facebook */}
+          <SocialWidget 
+            googleBusinessUrl="https://g.page/r/YOUR_GOOGLE_PLACE_ID"
+            googleRating={4.9}
+            googleReviewCount={127}
+            facebookPageUrl="https://www.facebook.com/WojciechBozemski"
+            facebookPageName="Wojciech Bożemski - Terapia Energetyczna"
+            facebookFollowers={1542}
+            position="bottom-left"
+            showOnMobile={true}
+          />
+          
           {/* Cookie Consent Banner */}
           <CookieConsent />
           
@@ -131,12 +144,6 @@ function AppContent() {
             onClose={() => setIsBookingOpen(false)} 
           />
 
-          {/* Performance Monitor (Ctrl+Shift+P to toggle) */}
-          <PerformanceMonitor debug={false} />
-          
-          {/* Admin Updater (Ctrl+Alt+U to toggle) - Hidden Dev Tool */}
-          <AdminUpdater />
-          
           {/* Main content with smooth transitions */}
           <div className="relative z-10">
             <HeroSection />
@@ -153,20 +160,12 @@ function AppContent() {
               <ServicesSection />
             </SectionTransition>
             
-            <SectionTransition>
-              <StatsSection />
-            </SectionTransition>
-            
             <SectionTransition id="media">
               <MediaCoverageSection />
             </SectionTransition>
 
             <SectionTransition id="audio-zone">
                <AudioZoneSection />
-            </SectionTransition>
-            
-            <SectionTransition>
-              <TestimonialsSection />
             </SectionTransition>
 
             <SectionTransition id="blog">

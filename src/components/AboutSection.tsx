@@ -1,8 +1,9 @@
 import { motion } from 'motion/react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Check, Sparkles, User, Heart, Zap } from 'lucide-react';
 import { SectionDivider } from './SectionDivider';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
-import portraitImage from 'figma:asset/9592c4a21b5692dd6eb431cd07275a9415a49caf.png';
+import portraitImage from "figma:asset/6c63c61f1171641b7368e72f973f9729e56663f6.png";
 
 export function AboutSection() {
   return (

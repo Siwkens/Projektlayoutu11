@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Newspaper, Calendar, ChevronRight } from 'lucide-react';
+import { ExternalLink, Newspaper, BookOpen, Award, Calendar, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 import { SectionDivider } from './SectionDivider';
 import { ArticleModal } from './ArticleModal';
-import articleImage1 from 'figma:asset/d341cd1dd9afe1657b91f87774a2745bca12aeca.png';
-import articleImage2 from 'figma:asset/8764f445faccbbbf029a02fe3b36f4873b0e872d.png';
-import articleImage3 from 'figma:asset/f5aaf9fe1adf9eeb010f7853d2d7420f88e3d47d.png';
+import articleImage1 from "figma:asset/8764f445faccbbbf029a02fe3b36f4873b0e872d.png";
+import articleImage2 from "figma:asset/92bc2f6976c3b7b7861df3766cbccd1eae58226c.png";
+import articleImage3 from "figma:asset/f5aaf9fe1adf9eeb010f7853d2d7420f88e3d47d.png";
 
 const mediaArticles = [
   {
