@@ -7,6 +7,34 @@ interface Star {
   size: number;
 }
 
+// Global styles component - renders only once
+function GlobalGeometryStyles() {
+  return (
+    <style dangerouslySetInnerHTML={{ __html: `
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px) translateX(0px);
+        }
+        33% {
+          transform: translateY(-20px) translateX(10px);
+        }
+        66% {
+          transform: translateY(-10px) translateX(-10px);
+        }
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    `}} />
+  );
+}
+
 function StarField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
@@ -157,29 +185,6 @@ function FloatingGeometry() {
           />
         </svg>
       </div>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) translateX(0px);
-          }
-          33% {
-            transform: translateY(-20px) translateX(10px);
-          }
-          66% {
-            transform: translateY(-10px) translateX(-10px);
-          }
-        }
-
-        @keyframes rotate {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 }
@@ -187,6 +192,7 @@ function FloatingGeometry() {
 export function CosmicScene() {
   return (
     <div className="absolute inset-0 -z-10">
+      <GlobalGeometryStyles />
       <StarField />
       <FloatingGeometry />
     </div>

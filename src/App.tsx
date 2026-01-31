@@ -118,10 +118,10 @@ function AppContent() {
           
           {/* Social Media Widget - Google Business + Facebook */}
           <SocialWidget 
-            googleBusinessUrl="https://g.page/r/YOUR_GOOGLE_PLACE_ID"
+            googleBusinessUrl="https://share.google/gGBd0NFwRKuCfO78G"
             googleRating={4.9}
             googleReviewCount={127}
-            facebookPageUrl="https://www.facebook.com/WojciechBozemski"
+            facebookPageUrl="https://www.facebook.com/share/1K98J96if7/"
             facebookPageName="Wojciech Bożemski - Terapia Energetyczna"
             facebookFollowers={1542}
             position="bottom-left"

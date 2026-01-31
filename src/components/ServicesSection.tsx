@@ -3,18 +3,13 @@ import { Hand, Infinity, Radio, Shield, ArrowRight } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useState } from 'react';
 
-import service1 from "figma:asset/d341cd1dd9afe1657b91f87774a2745bca12aeca.png";
-import service2 from "figma:asset/6c63c61f1171641b7368e72f973f9729e56663f6.png";
-import service3 from "figma:asset/8764f445faccbbbf029a02fe3b36f4873b0e872d.png";
-import service4 from "figma:asset/92bc2f6976c3b7b7861df3766cbccd1eae58226c.png";
-
 const services = [
   {
     title: 'Bioterapia',
     subtitle: 'Manualna i Energetyczna',
     description: 'Oczyszczanie i harmonizacja czakr oraz aury',
     details: 'Bezpośrednia praca z polem energetycznym pacjenta. Usuwanie blokad, zasilanie organów energią witalną i przywracanie homeostazy.',
-    image: service1,
+    image: 'https://images.unsplash.com/photo-1560287810-1c89fede7218?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmVyZ3klMjBoZWFsaW5nJTIwaGFuZHMlMjBtZWRpdGF0aW9uJTIwc3Bpcml0dWFsfGVufDF8fHx8MTc2OTgwODg0M3ww&ixlib=rb-4.1.0&q=80&w=1080',
     icon: Hand,
     gradient: 'from-purple-600 via-purple-500 to-pink-600',
     glowColor: 'rgba(168, 85, 247, 0.4)',
@@ -25,7 +20,7 @@ const services = [
     subtitle: 'Kwantowa',
     description: 'Metoda Dwupunktowa i praca z intencją',
     details: 'Transformacja rzeczywistości poprzez pole serca i świadomości. Szybkie zmiany wzorców i przekonań na poziomie kwantowym.',
-    image: service2,
+    image: 'https://images.unsplash.com/photo-1759437857324-fca900e82c27?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3NtaWMlMjBlbmVyZ3klMjBwdXJwbGUlMjBsaWdodCUyMHdhdmVzfGVufDF8fHx8MTc2OTgwODg0N3ww&ixlib=rb-4.1.0&q=80&w=1080',
     icon: Infinity,
     gradient: 'from-blue-600 via-blue-500 to-cyan-600',
     glowColor: 'rgba(59, 130, 246, 0.4)',
@@ -36,7 +31,7 @@ const services = [
     subtitle: 'na odległość',
     description: 'Pełna skuteczność bez kontaktu fizycznego',
     details: 'Energia nie zna granic czasu i przestrzeni. Sesje online są równie skuteczne co spotkania osobiste, idealne dla osób z zagranicy.',
-    image: service3,
+    image: 'https://images.unsplash.com/photo-1655970580622-4a547789c850?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZW1vdGUlMjBoZWFsaW5nJTIwb25saW5lJTIwbWVkaXRhdGlvbiUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzY5ODA4ODQ0fDA&ixlib=rb-4.1.0&q=80&w=1080',
     icon: Radio,
     gradient: 'from-indigo-600 via-indigo-500 to-purple-600',
     glowColor: 'rgba(99, 102, 241, 0.4)',
@@ -47,7 +42,7 @@ const services = [
     subtitle: 'Przestrzeni i Relacji',
     description: 'Harmonia w domu i w związkach',
     details: 'Energetyczne oczyszczanie mieszkań z ciężkich energii oraz uzdrawianie toksycznych relacji i węzłów karmicznych.',
-    image: service4,
+    image: 'https://images.unsplash.com/photo-1753552502151-93914d36ecf2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx6ZW4lMjBzcGFjZSUyMGNsZWFuc2luZyUyMHBlYWNlZnVsJTIwaG9tZXxlbnwxfHx8fDE3Njk4MDg4NDR8MA&ixlib=rb-4.1.0&q=80&w=1080',
     icon: Shield,
     gradient: 'from-emerald-600 via-emerald-500 to-teal-600',
     glowColor: 'rgba(16, 185, 129, 0.4)',

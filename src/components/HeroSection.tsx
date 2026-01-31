@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { Magnetic } from './effects/Magnetic';
 import { useMood } from './context/MoodContext';
 import { useRipple } from './effects/Ripple';
-import { TextScramble } from './effects/TextScramble';
 import logoImg from "figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png";
 // Używamy logo jako obrazu atomu/energii
 import atomImg from "figma:asset/be2780475736cb336b192d67a3191d5c5f571cbd.png";
@@ -124,10 +123,14 @@ export function HeroSection() {
         </motion.div>
 
         <div className="mb-4 h-16 flex items-center justify-center">
-          <TextScramble 
-            text="Wojciech Bożemski" 
+          <motion.h1 
             className="text-4xl md:text-6xl font-bold text-white block"
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            Wojciech Bożemski
+          </motion.h1>
         </div>
         
         <motion.p 
@@ -150,7 +153,7 @@ export function HeroSection() {
             className="text-white/80 max-w-2xl mx-auto" 
             style={{ fontSize: '0.95rem', lineHeight: '1.8' }}
           >
-            <TextScramble text="Przywracanie naturalnego przepływu energii życiowej." trigger={true} />
+            Przywracanie naturalnego przepływu energii życiowej.
             <br />
             Harmonizacja ciała, umysłu i ducha poprzez terapię kwantową i świętą geometrię.
           </p>

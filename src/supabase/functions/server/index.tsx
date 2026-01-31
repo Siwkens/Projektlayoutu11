@@ -192,6 +192,94 @@ app.patch("/make-server-139d10cf/bookings/:id", async (c) => {
   }
 });
 
+// --- Recommendations Routes ---
+
+// Create Recommendation (Admin Only)
+app.post("/make-server-139d10cf/recommendations", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    const ADMIN_EMAILS = ["wojciech@bozemski.pl", "bozemskiw@gmail.com", "patryk.siwkens@gmail.com", "admin@test.pl"];
+    const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+    if (!isAdmin) return c.json({ error: "Admin only" }, 403);
+    
+    const { userId, text, category, priority } = await c.req.json();
+    
+    if (!userId || !text) {
+      return c.json({ error: "userId and text are required" }, 400);
+    }
+    
+    const recommendation = {
+      id: `recommendation_${Date.now()}`,
+      userId,
+      text,
+      category: category || 'other', // 'diet', 'exercise', 'meditation', 'grounding', 'other'
+      priority: priority || 'medium', // 'low', 'medium', 'high'
+      completed: false,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+    };
+    
+    await kv.set(recommendation.id, recommendation);
+    
+    console.log(`Recommendation created: ${recommendation.id} for user ${userId}`);
+    return c.json(recommendation);
+  } catch (e) {
+    console.error("Create recommendation error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Get User Recommendations
+app.get("/make-server-139d10cf/recommendations", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    const allRecs = await kv.getByPrefix("recommendation_");
+    const userRecs = allRecs.filter((r: any) => r.userId === user.id);
+    
+    // Sort by creation date (newest first)
+    const sortedRecs = userRecs.sort((a: any, b: any) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    
+    return c.json(sortedRecs);
+  } catch (e) {
+    console.error("Get recommendations error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// Mark Recommendation as Completed
+app.patch("/make-server-139d10cf/recommendations/:id", async (c) => {
+  try {
+    const user = await getUser(c.req.raw);
+    if (!user) return c.json({ error: "Unauthorized" }, 401);
+    
+    const id = c.req.param('id');
+    const rec = await kv.get(id);
+    
+    if (!rec || rec.userId !== user.id) {
+      return c.json({ error: "Not found or access denied" }, 404);
+    }
+    
+    const { completed } = await c.req.json();
+    
+    rec.completed = completed;
+    rec.completedAt = completed ? new Date().toISOString() : null;
+    
+    await kv.set(id, rec);
+    
+    console.log(`Recommendation ${id} marked as ${completed ? 'completed' : 'incomplete'}`);
+    return c.json(rec);
+  } catch (e) {
+    console.error("Update recommendation error:", e);
+    return c.json({ error: e.message }, 500);
+  }
+});
+
 // Sign Up Route (Auto-confirm)
 app.post("/make-server-139d10cf/signup", async (c) => {
   try {

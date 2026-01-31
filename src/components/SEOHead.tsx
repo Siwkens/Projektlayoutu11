@@ -123,8 +123,8 @@ export function SEOHead({
       priceRange: '$$',
       openingHours: 'Mo-Fr 09:00-18:00',
       sameAs: [
-        'https://www.facebook.com/WojciechBozemski',
-        'https://www.instagram.com/wojciech.bozemski',
+        'https://www.facebook.com/share/1K98J96if7/',
+        'https://share.google/gGBd0NFwRKuCfO78G',
       ],
     });
 
